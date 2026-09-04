@@ -25,7 +25,6 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-0f1420?style=flat-square&logo=javascript&logoColor=f7df1e)
 ![Chart.js](https://img.shields.io/badge/Chart.js-0f1420?style=flat-square&logo=chartdotjs&logoColor=ff6384)
 ![jsPDF](https://img.shields.io/badge/jsPDF-0f1420?style=flat-square&logo=adobeacrobatreader&logoColor=e0122f)
-![Netlify](https://img.shields.io/badge/Hosted_on-Netlify-0f1420?style=flat-square&logo=netlify&logoColor=00c7b7)
 ![License](https://img.shields.io/badge/License-MIT-0f1420?style=flat-square)
 
 </div>
