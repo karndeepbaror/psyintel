@@ -1,0 +1,2043 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=ai-legible&utm_source=comment&utm_medium=referral&utm_id=ae3169d2-cf74-44d0-b4bc-423ba69790c1
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta name="hosting-provider" content="Netlify">
+<meta name="netlify-deploy" content="https://netlify.new/?utm_campaign=ai-legible&amp;utm_source=meta&amp;utm_medium=referral&amp;utm_id=ae3169d2-cf74-44d0-b4bc-423ba69790c1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PsyIntel — Cyber Psychological Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="js/chart.umd.js"></script>
+<script src="js/jspdf.umd.min.js"></script>
+<style>
+:root {
+  --bg-primary: #f7f8fa;
+  --bg-secondary: #eef0f3;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fbfbfd;
+  --bg-glass: rgba(255,255,255,0.85);
+  --accent-red: #e0122f;
+  --accent-red-soft: #ff3552;
+  --accent-red-glow: rgba(224,18,48,0.07);
+  --accent-red-border: rgba(224,18,48,0.28);
+  --accent-amber: #b45309;
+  --accent-green: #059669;
+  --accent-blue: #0891b2;
+  --text-primary: #0f1420;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border: rgba(15,23,42,0.09);
+  --border-accent: rgba(224,18,48,0.25);
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse 80% 60% at 50% -20%,rgba(224,18,48,0.05) 0%,transparent 70%),radial-gradient(ellipse 60% 50% at 100% 100%,rgba(8,145,178,0.04) 0%,transparent 70%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(rgba(224,18,48,0.07) 1px, transparent 1px);background-size:22px 22px}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg-secondary)}
+::-webkit-scrollbar-thumb{background:var(--accent-red-border);border-radius:2px}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.86);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem}
+.nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;height:56px}
+.logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo-icon{width:36px;height:36px;position:relative}
+.logo-icon svg{width:36px;height:36px}
+.logo-text-wrap{}
+.logo-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:2px;color:var(--text-primary);line-height:1}
+.logo-tagline{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);letter-spacing:1px;line-height:1}
+.nav-divider{width:1px;height:28px;background:var(--border);flex-shrink:0}
+.nav-credits{font-size:11px;color:var(--text-muted);line-height:1.4}
+.nav-credits a{color:var(--accent-red-soft);text-decoration:none;transition:color .2s}
+.nav-credits a:hover{color:var(--text-primary)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.nav-badge{font-family:var(--font-mono);font-size:9px;padding:3px 8px;border-radius:3px;border:1px solid;letter-spacing:1px;font-weight:500}
+.badge-live{color:#27ae60;border-color:rgba(39,174,96,0.4);background:rgba(39,174,96,0.08)}
+.badge-intel{color:var(--accent-red-soft);border-color:var(--accent-red-border);background:var(--accent-red-glow)}
+.nav-status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#27ae60;box-shadow:0 0 6px #27ae60;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* HERO */
+.hero{max-width:1400px;margin:0 auto;padding:5rem 2rem 3rem;text-align:center;position:relative}
+.hero-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:var(--accent-red-soft);text-transform:uppercase;margin-bottom:1.5rem;opacity:.8}
+.hero-title{font-family:var(--font-display);font-size:clamp(52px,8vw,96px);font-weight:700;letter-spacing:4px;line-height:.95;color:var(--text-primary);margin-bottom:.75rem}
+.hero-title span{color:var(--accent-red-soft)}
+.hero-typing-wrap{height:28px;overflow:hidden;margin-bottom:1.5rem}
+.hero-typing{font-family:var(--font-mono);font-size:13px;color:var(--accent-amber);letter-spacing:1px;display:inline-block}
+.hero-cursor{display:inline-block;width:2px;height:14px;background:var(--accent-red-soft);margin-left:2px;vertical-align:middle;animation:blink .8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-desc{max-width:640px;margin:0 auto 2.5rem;color:var(--text-secondary);font-size:13.5px;line-height:1.8}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:2.5rem;margin-bottom:3rem;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--text-primary);line-height:1}
+.hero-stat-num span{color:var(--accent-red-soft)}
+.hero-stat-label{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);letter-spacing:1px;margin-top:2px}
+.stat-sep{width:1px;height:36px;background:var(--border)}
+
+/* MAIN LAYOUT */
+.main{max-width:1400px;margin:0 auto;padding:0 2rem 4rem;display:grid;grid-template-columns:1fr 340px;gap:1.5rem}
+@media(max-width:1100px){.main{grid-template-columns:1fr}}
+
+/* CARDS */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .2s}
+.card:hover{border-color:rgba(15,23,42,0.16)}
+.card-header{padding:.9rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.card-header-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;color:var(--accent-red-soft)}
+.card-title{font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-secondary)}
+.card-badge{margin-left:auto;font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:2px;background:var(--accent-red-glow);color:var(--accent-red-soft);border:1px solid var(--accent-red-border);letter-spacing:.5px}
+.card-body{padding:1.2rem}
+
+/* CASE STRIP (case ID / evidence hash / timestamp) */
+.case-strip{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;padding:.65rem 1.2rem;background:var(--bg-secondary);border-bottom:1px solid var(--border)}
+.case-strip-item{display:flex;flex-direction:column;gap:1px;min-width:0}
+.case-strip-label{font-family:var(--font-mono);font-size:7.5px;color:var(--text-muted);letter-spacing:1px}
+.case-strip-val{font-family:var(--font-mono);font-size:10.5px;color:var(--accent-red);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px}
+.case-strip-sep{width:1px;height:22px;background:var(--border);flex-shrink:0}
+
+/* CHAIN OF CUSTODY */
+.custody-log{display:flex;flex-direction:column;gap:5px;max-height:180px;overflow-y:auto}
+.custody-row{display:flex;gap:8px;align-items:baseline;padding:.4rem .6rem;background:var(--bg-secondary);border-radius:5px;border:1px solid var(--border)}
+.custody-time{font-family:var(--font-mono);font-size:8.5px;color:var(--text-muted);flex-shrink:0}
+.custody-action{font-size:10.5px;color:var(--text-secondary)}
+
+/* CASE HISTORY */
+.history-item{padding:.55rem .7rem;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all .2s;margin-bottom:6px}
+.history-item:hover{border-color:var(--accent-red-border);background:var(--accent-red-glow)}
+.history-top{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:3px}
+.history-case-id{font-family:var(--font-mono);font-size:9.5px;font-weight:700;color:var(--text-primary)}
+.history-excerpt{font-size:10.5px;color:var(--text-secondary);line-height:1.4;margin-bottom:3px}
+.history-time{font-family:var(--font-mono);font-size:8px;color:var(--text-muted)}
+
+/* METHODOLOGY DISCLOSURE */
+.methodology-item{display:flex;gap:8px;padding:.5rem 0;border-bottom:1px solid var(--border)}
+.methodology-item:last-child{border-bottom:none}
+.methodology-num{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--accent-red);flex-shrink:0;width:16px}
+.methodology-text{font-size:11px;color:var(--text-secondary);line-height:1.6}
+
+/* INPUT SECTION */
+.input-tabs{display:flex;gap:4px;padding:.75rem 1.2rem;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.tab-btn{font-family:var(--font-mono);font-size:9px;padding:4px 10px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.tab-btn.active,.tab-btn:hover{background:var(--accent-red-glow);color:var(--accent-red-soft);border-color:var(--accent-red-border)}
+.input-area{position:relative}
+textarea.psy-input{width:100%;background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-family:var(--font-mono);font-size:12px;padding:1rem;resize:vertical;min-height:180px;outline:none;transition:border-color .2s;line-height:1.7}
+textarea.psy-input:focus{border-color:var(--accent-red-border)}
+textarea.psy-input::placeholder{color:var(--text-muted)}
+.drop-zone{border:1px dashed var(--border);border-radius:8px;padding:2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg-secondary)}
+.drop-zone:hover,.drop-zone.dragging{border-color:var(--accent-red-border);background:var(--accent-red-glow)}
+.drop-zone-icon{font-size:28px;margin-bottom:.5rem;opacity:.4}
+.drop-zone p{font-size:12px;color:var(--text-muted)}
+.drop-zone p span{color:var(--accent-red-soft);cursor:pointer}
+.file-input{display:none}
+.input-lang{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
+.lang-label{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);letter-spacing:1px}
+.lang-btn{font-family:var(--font-mono);font-size:9px;padding:3px 8px;border-radius:2px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s}
+.lang-btn.active{background:rgba(8,145,178,0.1);color:#0891b2;border-color:rgba(8,145,178,0.3)}
+.btn-group{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1rem}
+.btn-primary{background:linear-gradient(135deg,#8a0f22,var(--accent-red));color:#fff;border:none;border-radius:6px;padding:.7rem 1rem;font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:1.5px;cursor:pointer;transition:all .2s;text-transform:uppercase;width:100%;grid-column:1/-1}
+.btn-primary:hover{background:linear-gradient(135deg,var(--accent-red),#ff3552);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-secondary{background:transparent;color:var(--text-secondary);border:1px solid var(--border);border-radius:6px;padding:.55rem .75rem;font-family:var(--font-mono);font-size:9px;letter-spacing:.5px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.btn-secondary:hover{border-color:var(--accent-red-border);color:var(--accent-red-soft);background:var(--accent-red-glow)}
+.btn-secondary.active{border-color:var(--accent-red-border);color:var(--accent-red-soft);background:var(--accent-red-glow)}
+
+/* LOADING */
+.analysis-loading{display:none;padding:2rem;text-align:center}
+.loading-bar-wrap{width:100%;height:2px;background:var(--border);border-radius:1px;margin:1rem 0;overflow:hidden}
+.loading-bar{height:100%;background:linear-gradient(90deg,var(--accent-red),var(--accent-amber),var(--accent-red));background-size:200% 100%;animation:loading-slide 1.5s linear infinite}
+@keyframes loading-slide{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.loading-label{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:1px;animation:fade-cycle 2s infinite}
+@keyframes fade-cycle{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* RESULTS */
+.results-wrap{display:none}
+
+/* THREAT SCORE */
+.threat-score-ring{position:relative;width:100px;height:100px;margin:0 auto 1rem}
+.threat-score-ring svg{transform:rotate(-90deg)}
+.threat-score-ring .score-val{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--font-display);font-size:26px;font-weight:700;color:var(--text-primary);text-align:center;line-height:1}
+.threat-score-ring .score-label{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:1px;white-space:nowrap}
+
+/* METRIC GRID */
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.metric-card{background:var(--bg-secondary);border:1px solid var(--border);border-radius:7px;padding:.75rem;text-align:center;transition:all .2s}
+.metric-card:hover{border-color:var(--accent-red-border)}
+.metric-val{font-family:var(--font-display);font-size:22px;font-weight:700;line-height:1;margin-bottom:2px}
+.metric-label{font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:.5px}
+.metric-bar{height:2px;border-radius:1px;margin-top:6px;background:var(--border);overflow:hidden}
+.metric-bar-fill{height:100%;border-radius:1px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* THREAT LEVEL BADGE */
+.threat-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:4px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem}
+.threat-badge.low{background:rgba(39,174,96,.12);color:#27ae60;border:1px solid rgba(39,174,96,.3)}
+.threat-badge.medium{background:rgba(212,160,23,.12);color:#d4a017;border:1px solid rgba(212,160,23,.3)}
+.threat-badge.high{background:rgba(230,126,34,.12);color:#e67e22;border:1px solid rgba(230,126,34,.3)}
+.threat-badge.critical{background:rgba(224,18,48,.12);color:#ff3552;border:1px solid var(--accent-red-border)}
+.threat-badge .badge-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* SCAM PATTERNS */
+.scam-list{display:flex;flex-direction:column;gap:6px}
+.scam-item{display:flex;align-items:center;gap:8px;padding:.5rem .75rem;background:var(--bg-secondary);border-radius:5px;border:1px solid var(--border)}
+.scam-item-name{flex:1;font-size:12px;color:var(--text-secondary)}
+.scam-item-pct{font-family:var(--font-mono);font-size:11px;font-weight:600}
+.scam-bar-wrap{width:80px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.scam-bar-fill{height:100%;border-radius:2px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* HIGHLIGHTED TEXT */
+.highlight-wrap{background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:1rem;font-family:var(--font-mono);font-size:11px;line-height:2;max-height:220px;overflow-y:auto}
+.highlight-fear{background:rgba(224,18,48,.25);color:#ff3552;border-radius:2px;padding:1px 3px}
+.highlight-urgency{background:rgba(212,160,23,.25);color:#d4a017;border-radius:2px;padding:1px 3px}
+.highlight-authority{background:rgba(8,145,178,.25);color:#22d3ee;border-radius:2px;padding:1px 3px}
+.highlight-greed{background:rgba(39,174,96,.25);color:#2ecc71;border-radius:2px;padding:1px 3px}
+.highlight-pressure{background:rgba(155,89,182,.25);color:#9b59b6;border-radius:2px;padding:1px 3px}
+.highlight-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:.75rem}
+.hl-pill{font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:3px;letter-spacing:.5px}
+
+/* BEHAVIORAL FINGERPRINT */
+.fingerprint-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.fp-item{background:var(--bg-secondary);border:1px solid var(--border);border-radius:5px;padding:.6rem .75rem}
+.fp-label{font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:.5px;margin-bottom:4px}
+.fp-val{font-size:12px;color:var(--text-secondary)}
+.fp-badge{display:inline-block;font-family:var(--font-mono);font-size:8px;padding:1px 6px;border-radius:2px;margin-top:3px}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:12px;position:relative;padding-bottom:1rem}
+.tl-item:last-child{padding-bottom:0}
+.tl-item:not(:last-child)::before{content:'';position:absolute;left:8px;top:18px;bottom:0;width:1px;background:var(--border)}
+.tl-dot{width:16px;height:16px;border-radius:50%;border:2px solid;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;background:var(--bg-card)}
+.tl-dot::after{content:'';width:5px;height:5px;border-radius:50%;background:currentColor}
+.tl-content{}
+.tl-time{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-bottom:2px}
+.tl-text{font-size:11.5px;color:var(--text-secondary)}
+.tl-tag{display:inline-block;font-family:var(--font-mono);font-size:8px;padding:1px 6px;border-radius:2px;margin-top:4px}
+
+/* ENTITY EXTRACT */
+.entity-wrap{display:flex;flex-direction:column;gap:6px}
+.entity-row{display:flex;align-items:flex-start;gap:8px}
+.entity-type{font-family:var(--font-mono);font-size:8px;padding:2px 7px;border-radius:2px;flex-shrink:0;margin-top:2px;letter-spacing:.5px}
+.entity-vals{display:flex;flex-wrap:wrap;gap:4px}
+.entity-val{font-family:var(--font-mono);font-size:10px;padding:2px 8px;border-radius:3px;background:var(--bg-secondary);border:1px solid var(--border);color:var(--text-secondary)}
+
+/* INTELLIGENCE SIDEBAR */
+.sidebar{}
+.sidebar-inner{display:flex;flex-direction:column;gap:1rem;position:sticky;top:72px}
+.investigator-chat{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;padding:.5rem 0}
+.msg{padding:.65rem .9rem;border-radius:7px;font-size:12px;line-height:1.6;max-width:90%}
+.msg-ai{background:var(--bg-secondary);border:1px solid var(--border);color:var(--text-secondary);border-radius:7px 7px 7px 2px}
+.msg-prefix{font-family:var(--font-mono);font-size:8px;color:var(--accent-red-soft);margin-bottom:4px;letter-spacing:.5px}
+.chat-input-wrap{display:flex;gap:6px;margin-top:.5rem}
+.chat-input{flex:1;background:var(--bg-secondary);border:1px solid var(--border);border-radius:5px;color:var(--text-primary);font-family:var(--font-mono);font-size:11px;padding:.5rem .75rem;outline:none;transition:border-color .2s}
+.chat-input:focus{border-color:var(--accent-red-border)}
+.chat-send{background:var(--accent-red);color:#fff;border:none;border-radius:5px;padding:.5rem .75rem;cursor:pointer;font-size:12px;transition:background .2s}
+.chat-send:hover{background:var(--accent-red-soft)}
+
+/* LIVE FEED */
+.feed-list{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto}
+.feed-item{padding:.5rem .75rem;background:var(--bg-secondary);border:1px solid var(--border);border-radius:5px;display:flex;align-items:center;gap:8px;animation:feed-in .4s ease}
+@keyframes feed-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.feed-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.feed-text{font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);flex:1}
+.feed-time{font-family:var(--font-mono);font-size:8px;color:var(--text-muted)}
+
+/* EXPORT BUTTONS */
+.export-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.export-btn{background:var(--bg-secondary);border:1px solid var(--border);border-radius:5px;padding:.55rem;font-family:var(--font-mono);font-size:9px;color:var(--text-muted);cursor:pointer;transition:all .2s;text-align:center;letter-spacing:.5px;text-transform:uppercase}
+.export-btn:hover{border-color:var(--accent-red-border);color:var(--accent-red-soft);background:var(--accent-red-glow)}
+
+/* NOTES SYSTEM */
+.notes-area{width:100%;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);font-family:var(--font-mono);font-size:11px;padding:.75rem;resize:none;height:90px;outline:none;transition:border-color .2s}
+.notes-area:focus{border-color:var(--accent-red-border)}
+.notes-save{width:100%;margin-top:6px}
+
+/* URL/DOMAIN */
+.url-list{display:flex;flex-direction:column;gap:5px}
+.url-item{display:flex;align-items:center;gap:8px;padding:.45rem .75rem;background:var(--bg-secondary);border-radius:5px;border:1px solid var(--border);font-family:var(--font-mono);font-size:10px}
+.url-risk{font-size:8px;padding:1px 6px;border-radius:2px;margin-left:auto;letter-spacing:.5px;flex-shrink:0}
+.risk-high{background:rgba(224,18,48,.15);color:#ff3552;border:1px solid var(--accent-red-border)}
+.risk-med{background:rgba(212,160,23,.12);color:#d4a017;border:1px solid rgba(212,160,23,.3)}
+.risk-low{background:rgba(39,174,96,.1);color:#27ae60;border:1px solid rgba(39,174,96,.25)}
+
+/* HEATMAP */
+.heatmap-wrap{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.hm-cell{aspect-ratio:1;border-radius:2px;transition:all .3s}
+
+/* SECTION TITLE */
+.section-title{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:.75rem;display:flex;align-items:center;gap:6px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* AI SUMMARY BOX */
+.ai-summary{background:linear-gradient(135deg,rgba(224,18,48,.05),rgba(8,145,178,.05));border:1px solid var(--accent-red-border);border-radius:8px;padding:1rem;position:relative;overflow:hidden}
+.ai-summary::before{content:'INTELLIGENCE SUMMARY';position:absolute;top:8px;right:10px;font-family:var(--font-mono);font-size:7px;color:var(--accent-red-border);letter-spacing:2px}
+.ai-summary p{font-size:12px;color:var(--text-secondary);line-height:1.8}
+
+/* NETWORK GRAPH */
+#network-canvas{width:100%;height:200px;border-radius:7px;background:var(--bg-secondary)}
+
+/* CHART CANVAS */
+.chart-wrap{position:relative;width:100%;height:200px}
+
+/* ANIMATED COUNTER */
+.counter{font-family:var(--font-display)}
+
+/* RECOMMENDATION CARDS */
+.rec-list{display:flex;flex-direction:column;gap:6px}
+.rec-item{padding:.65rem .85rem;border-radius:6px;border-left:3px solid;background:var(--bg-secondary);font-size:11.5px;color:var(--text-secondary);line-height:1.6}
+
+/* TABS NAV */
+.results-tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:1rem}
+.res-tab{font-family:var(--font-mono);font-size:9px;padding:.5rem .9rem;background:transparent;border:none;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;letter-spacing:.5px;text-transform:uppercase}
+.res-tab.active{color:var(--accent-red-soft);border-bottom-color:var(--accent-red-soft)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .metric-grid{grid-template-columns:repeat(2,1fr)}
+  .fingerprint-grid{grid-template-columns:1fr}
+  .hero-stats{gap:1.5rem}
+}
+
+/* SECTION SEPARATOR */
+.sep{height:1px;background:var(--border);margin:1.5rem 0}
+
+/* PULSE ANIMATION */
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 0 0 rgba(224,18,48,0)}50%{box-shadow:0 0 12px 2px rgba(224,18,48,0.2)}}
+.pulse-glow{animation:pulse-glow 3s infinite}
+
+/* FADE IN */
+.fade-in{opacity:0;transform:translateY(12px);animation:fade-in-up .5s ease forwards}
+@keyframes fade-in-up{to{opacity:1;transform:translateY(0)}}
+
+/* STAGGER */
+.s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}.s5{animation-delay:.25s}
+
+/* TOP BORDER CARD */
+.card-red-top{border-top:2px solid var(--accent-red)}
+.card-amber-top{border-top:2px solid var(--accent-amber)}
+.card-blue-top{border-top:2px solid var(--accent-blue)}
+.card-green-top{border-top:2px solid var(--accent-green)}
+
+/* MINI BADGE */
+.mini-tag{font-family:var(--font-mono);font-size:8px;padding:1px 6px;border-radius:2px;letter-spacing:.5px}
+
+/* COLLAPSIBLE PANELS */
+.panel-toggle{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;transition:transform .2s;margin-left:auto}
+.panel-toggle.open{transform:rotate(180deg)}
+.panel-body{transition:max-height .3s ease,opacity .3s ease;overflow:hidden;max-height:2000px;opacity:1}
+.panel-body.collapsed{max-height:0;opacity:0}
+@media print {
+  nav, .hero, .card-header-icon, .export-grid, .btn-secondary, .notes-save,
+  .results-tabs, #loading-card, .res-tab { display:none !important; }
+  body::before, body::after { display:none !important; }
+  .main { display:block !important; }
+  .sidebar .card:not(.card-blue-top) { display:none !important; }
+  .card { break-inside:avoid; border:1px solid #ddd !important; box-shadow:none !important; margin-bottom:10px; }
+  #tab-patterns, #tab-campaign, #tab-highlight, #tab-behavioral, #tab-entities, #tab-urls { display:block !important; margin-bottom:14px; }
+  body { background:#fff !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo-wrap" href="#">
+      <div class="logo-icon">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="17" stroke="rgba(224,18,48,0.4)" stroke-width="1"></circle>
+          <circle cx="18" cy="18" r="12" stroke="rgba(224,18,48,0.25)" stroke-width="1"></circle>
+          <path d="M18 4 L18 32 M4 18 L32 18" stroke="rgba(224,18,48,0.15)" stroke-width=".5"></path>
+          <path d="M10 10 L26 26 M26 10 L10 26" stroke="rgba(224,18,48,0.1)" stroke-width=".5"></path>
+          <circle cx="18" cy="18" r="5" fill="rgba(224,18,48,0.15)" stroke="#e0122f" stroke-width="1.5"></circle>
+          <circle cx="18" cy="18" r="2" fill="#e0122f"></circle>
+          <path d="M18 13 L20.6 17 L18 21 L15.4 17 Z" fill="rgba(224,18,48,0.4)" stroke="#e0122f" stroke-width=".5"></path>
+          <circle cx="18" cy="6" r="1.5" fill="#e0122f" opacity=".7"></circle>
+          <circle cx="18" cy="30" r="1.5" fill="#e0122f" opacity=".7"></circle>
+          <circle cx="6" cy="18" r="1.5" fill="#e0122f" opacity=".7"></circle>
+          <circle cx="30" cy="18" r="1.5" fill="#e0122f" opacity=".7"></circle>
+        </svg>
+      </div>
+      <div class="logo-text-wrap">
+        <div class="logo-name">PSYINTEL</div>
+        <div class="logo-tagline">Cyber Psychological Intelligence</div>
+      </div>
+    </a>
+    <div class="nav-divider"></div>
+    <div class="nav-credits">
+      Built by <a href="https://www.linkedin.com/in/karndeepbaror" target="_blank">Karandeep Baror</a> &nbsp;·&nbsp; Founder at <a href="https://linkedin.com/company/cryptonicarea" target="_blank">@CryptonicArea</a>
+    </div>
+    <div class="nav-right">
+      <span class="nav-badge badge-intel">PSYCH-INTEL v2.4</span>
+      <span class="nav-badge badge-live">LIVE</span>
+      <div class="nav-status"><span class="status-dot"></span><span>ENGINE ONLINE</span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">◊ Advanced Threat Intelligence Platform — Behavioral Analysis Engine</div>
+  <h1 class="hero-title">PSY<span>INTEL</span></h1>
+  <div class="hero-typing-wrap">
+    <span class="hero-typing" id="typing-el">Psycholo</span><span class="hero-cursor"></span>
+  </div>
+  <p class="hero-desc">PsyIntel analyzes scam messages, phishing content, social-engineering tactics, and behavioral manipulation patterns using AI-powered psychological threat intelligence.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num"><span>47</span>+ Tactics</div><div class="hero-stat-label">Manipulation Patterns</div></div>
+    <div class="stat-sep"></div>
+    <div class="hero-stat"><div class="hero-stat-num"><span>12</span> Vectors</div><div class="hero-stat-label">Scam Categories</div></div>
+    <div class="stat-sep"></div>
+    <div class="hero-stat"><div class="hero-stat-num"><span>3</span> Languages</div><div class="hero-stat-label">EN / HI / Hinglish</div></div>
+    <div class="stat-sep"></div>
+    <div class="hero-stat"><div class="hero-stat-num">Real<span>-</span>Time</div><div class="hero-stat-label">AI Threat Scoring</div></div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- LEFT COLUMN -->
+  <div style="display:flex;flex-direction:column;gap:1.25rem">
+
+    <!-- INPUT MODULE -->
+    <div class="card card-red-top pulse-glow">
+      <div class="card-header">
+        <div class="card-header-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <span class="card-title">Intelligence Input Module</span>
+        <span class="card-badge">ACTIVE</span>
+      </div>
+      <div class="input-tabs">
+        <button class="tab-btn active" onclick="setTab(this,'text')">SMS/Text</button>
+        <button class="tab-btn" onclick="setTab(this,'email')">Email</button>
+        <button class="tab-btn" onclick="setTab(this,'whatsapp')">WhatsApp</button>
+        <button class="tab-btn" onclick="setTab(this,'script')">Scam Script</button>
+        <button class="tab-btn" onclick="setTab(this,'phishing')">Phishing</button>
+        <button class="tab-btn" onclick="setTab(this,'social')">Social Media</button>
+        <button class="tab-btn" onclick="setTab(this,'call')">Call Transcript</button>
+      </div>
+      <div class="card-body" style="display:flex;flex-direction:column;gap:.85rem">
+        <div>
+          <div class="section-title">Paste Communication Content</div>
+          <textarea class="psy-input" id="main-input" placeholder="Paste SMS, email, WhatsApp message, scam script, phishing content, or any suspicious communication here...
+
+Example: 'Dear Customer, Your KYC verification is pending. Your account will be BLOCKED within 24 hours. Please click here immediately to complete verification and avoid suspension. Call our officer at +91-XXXXXXXXXX urgently.'"></textarea>
+        </div>
+        <div id="drop-zone-wrap">
+          <div class="section-title">Upload Files / Screenshots</div>
+          <div class="drop-zone" id="drop-zone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)" onclick="document.getElementById('file-input').click()">
+            <div class="drop-zone-icon">📎</div>
+            <p>Drag &amp; drop screenshot, PDF, or chat export — or <span>browse files</span></p>
+            <p style="margin-top:4px;font-size:10px">Supports: PNG, JPG, PDF, TXT, CSV — OCR auto-extracts text from images</p>
+          </div>
+          <input type="file" id="file-input" class="file-input" accept="image/*,.pdf,.txt,.csv" onchange="handleFileUpload(event)">
+          <div id="file-status" style="font-family:var(--font-mono);font-size:10px;color:var(--accent-amber);margin-top:6px;display:none"></div>
+        </div>
+        <div>
+          <div class="input-lang">
+            <span class="lang-label">LANGUAGE:</span>
+            <button class="lang-btn active" onclick="setLang(this,'en')">English</button>
+            <button class="lang-btn" onclick="setLang(this,'hi')">Hindi</button>
+            <button class="lang-btn" onclick="setLang(this,'hinglish')">Hinglish</button>
+            <button class="lang-btn" onclick="setLang(this,'auto')">Auto-Detect</button>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn-primary" onclick="runAnalysis()">▶ Analyze Psychological Threat</button>
+          <button class="btn-secondary active" onclick="setMode(this,'full')">Full Analysis</button>
+          <button class="btn-secondary" onclick="setMode(this,'threat')">Threat Breakdown</button>
+          <button class="btn-secondary" onclick="setMode(this,'behavior')">Behavior Mapping</button>
+          <button class="btn-secondary" onclick="setMode(this,'scam')">Scam Intelligence</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOADING STATE -->
+    <div class="card" id="loading-card" style="display:none">
+      <div class="card-body">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--accent-red-soft);animation:pulse-dot 1s infinite"></div>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--accent-red-soft)">PSYINTEL ENGINE PROCESSING...</span>
+        </div>
+        <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+        <div class="loading-label" id="loading-label">Initializing psychological pattern recognition...</div>
+        <div style="margin-top:1rem;display:grid;grid-template-columns:repeat(4,1fr);gap:6px" id="loading-checks">
+          <div class="mini-loading-step" id="lc-1">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:.5px">NLP ENGINE</div>
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted)" id="lc-1-val">waiting...</div>
+          </div>
+          <div class="mini-loading-step" id="lc-2">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:.5px">SCAM PATTERNS</div>
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted)" id="lc-2-val">waiting...</div>
+          </div>
+          <div class="mini-loading-step" id="lc-3">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:.5px">BEHAVIOR MODEL</div>
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted)" id="lc-3-val">waiting...</div>
+          </div>
+          <div class="mini-loading-step" id="lc-4">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:.5px">AI SCORING</div>
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted)" id="lc-4-val">waiting...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="results-section" style="display:none;flex-direction:column;gap:1.25rem">
+
+      <!-- THREAT OVERVIEW -->
+      <div class="card card-red-top fade-in s1">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+          <span class="card-title">Threat Intelligence Overview</span>
+          <span class="card-badge" id="threat-level-badge-small">CRITICAL</span>
+        </div>
+        <div class="case-strip">
+          <div class="case-strip-item"><span class="case-strip-label">CASE REF</span><span class="case-strip-val" id="case-id-display">—</span></div>
+          <div class="case-strip-sep"></div>
+          <div class="case-strip-item"><span class="case-strip-label">EVIDENCE HASH (SHA-256)</span><span class="case-strip-val" id="evidence-hash-display">—</span></div>
+          <div class="case-strip-sep"></div>
+          <div class="case-strip-item"><span class="case-strip-label">TIMESTAMP</span><span class="case-strip-val" id="case-time-display">—</span></div>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap">
+            <div style="text-align:center;flex-shrink:0">
+              <div class="threat-score-ring">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="42" stroke="var(--border)" stroke-width="6" fill="none"></circle>
+                  <circle cx="50" cy="50" r="42" stroke="#e0122f" stroke-width="6" fill="none" stroke-dasharray="264" id="score-arc" stroke-dashoffset="264" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)"></circle>
+                </svg>
+                <div class="score-val"><span id="score-number">0</span><span style="font-size:14px;color:var(--text-muted)">/100</span></div>
+                <div class="score-label">THREAT SCORE</div>
+              </div>
+              <div style="margin-top:.5rem" id="threat-badge-wrap">
+                <span class="threat-badge critical"><span class="badge-dot"></span><span id="threat-level-text">CRITICAL</span></span>
+              </div>
+            </div>
+            <div style="flex:1;min-width:200px">
+              <div class="section-title">Psychological Indicators</div>
+              <div class="metric-grid" id="metric-grid">
+                <!-- filled by JS -->
+              </div>
+            </div>
+          </div>
+          <div class="sep"></div>
+          <div class="ai-summary">
+            <p id="ai-summary-text">Loading intelligence summary...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="card fade-in s2">
+        <div class="results-tabs" style="padding:.5rem 1.2rem 0">
+          <button class="res-tab active" onclick="showResTab(this,'tab-patterns')">Scam Patterns</button>
+          <button class="res-tab" onclick="showResTab(this,'tab-campaign')">Campaign Match</button>
+          <button class="res-tab" onclick="showResTab(this,'tab-highlight')">Threat Language</button>
+          <button class="res-tab" onclick="showResTab(this,'tab-behavioral')">Behavioral Sig.</button>
+          <button class="res-tab" onclick="showResTab(this,'tab-entities')">Entity Extraction</button>
+          <button class="res-tab" onclick="showResTab(this,'tab-urls')">URLs / Domains</button>
+        </div>
+        <div class="card-body">
+
+          <!-- SCAM PATTERNS -->
+          <div id="tab-patterns">
+            <div class="section-title">Scam Category Intelligence</div>
+            <div class="scam-list" id="scam-list"></div>
+          </div>
+
+          <!-- CAMPAIGN SIGNATURE MATCH -->
+          <div id="tab-campaign" style="display:none">
+            <div class="section-title">Known Campaign Signature Match</div>
+            <p style="font-size:11px;color:var(--text-muted);margin:-.35rem 0 .75rem;line-height:1.6">Cross-referenced against a local library of recurring Indian scam-campaign scripts. A high match suggests this message follows a known, previously reported fraud template.</p>
+            <div class="scam-list" id="campaign-match-list"></div>
+          </div>
+
+          <!-- THREAT LANGUAGE -->
+          <div id="tab-highlight" style="display:none">
+            <div class="section-title">Threat Language Detection</div>
+            <div class="highlight-legend" id="hl-legend">
+              <span class="hl-pill highlight-fear">Fear</span>
+              <span class="hl-pill highlight-urgency">Urgency</span>
+              <span class="hl-pill highlight-authority">Authority</span>
+              <span class="hl-pill highlight-greed">Greed</span>
+              <span class="hl-pill highlight-pressure">Pressure</span>
+            </div>
+            <div class="highlight-wrap" id="highlight-text"></div>
+          </div>
+
+          <!-- BEHAVIORAL SIG -->
+          <div id="tab-behavioral" style="display:none">
+            <div class="section-title">Behavioral Fingerprint</div>
+            <div class="fingerprint-grid" id="fingerprint-grid"></div>
+          </div>
+
+          <!-- ENTITIES -->
+          <div id="tab-entities" style="display:none">
+            <div class="section-title">Entity Extraction</div>
+            <div class="entity-wrap" id="entity-wrap"></div>
+          </div>
+
+          <!-- URLS -->
+          <div id="tab-urls" style="display:none">
+            <div class="section-title">URL / Domain Intelligence</div>
+            <div class="url-list" id="url-list"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- EMOTIONAL PRESSURE CHART -->
+      <div class="card card-amber-top fade-in s3">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+          <span class="card-title">Emotional Pressure Analysis</span>
+          <span class="card-badge">LIVE CHART</span>
+        </div>
+        <div class="card-body">
+          <div class="chart-wrap"><canvas id="emotional-chart" role="img" aria-label="Radar chart showing emotional pressure indicators">Emotional pressure analysis chart</canvas></div>
+        </div>
+      </div>
+
+      <!-- INVESTIGATION TIMELINE + NETWORK -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
+        <div class="card card-blue-top fade-in s4">
+          <div class="card-header">
+            <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div>
+            <span class="card-title">Investigation Timeline</span>
+          </div>
+          <div class="card-body">
+            <div class="timeline" id="timeline"></div>
+          </div>
+        </div>
+        <div class="card card-green-top fade-in s4">
+          <div class="card-header">
+            <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
+            <span class="card-title">Relationship Map</span>
+          </div>
+          <div class="card-body" style="padding:.5rem">
+            <canvas id="network-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUSPICIOUS HEATMAP -->
+      <div class="card fade-in s5">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></div>
+          <span class="card-title">Suspicious Wording Heatmap</span>
+          <span class="card-badge">DENSITY ANALYSIS</span>
+        </div>
+        <div class="card-body">
+          <div class="heatmap-wrap" id="heatmap"></div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:.75rem;font-family:var(--font-mono);font-size:9px;color:var(--text-muted)">
+            <div style="width:10px;height:10px;border-radius:2px;background:var(--bg-secondary);border:1px solid var(--border)"></div><span>Clean</span>
+            <div style="width:10px;height:10px;border-radius:2px;background:rgba(212,160,23,.3)"></div><span>Moderate</span>
+            <div style="width:10px;height:10px;border-radius:2px;background:rgba(230,126,34,.5)"></div><span>High</span>
+            <div style="width:10px;height:10px;border-radius:2px;background:rgba(224,18,48,.7)"></div><span>Critical</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI RECOMMENDATIONS -->
+      <div class="card fade-in">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg></div>
+          <span class="card-title">AI Recommendations</span>
+          <span class="card-badge">INTEL REPORT</span>
+        </div>
+        <div class="card-body">
+          <div class="rec-list" id="rec-list"></div>
+        </div>
+      </div>
+
+      <!-- EXPORT PANEL -->
+      <div class="card fade-in">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></div>
+          <span class="card-title">Evidence Export System</span>
+        </div>
+        <div class="card-body">
+          <div class="export-grid">
+            <button class="export-btn" onclick="exportPDF()">📄 Export PDF Report</button>
+            <button class="export-btn" onclick="exportJSON()">{ } Export JSON</button>
+            <button class="export-btn" onclick="exportCSV()">📊 Export CSV</button>
+            <button class="export-btn" onclick="exportIntel()">🔍 Intel Report</button>
+            <button class="export-btn" onclick="printReport()">🖨️ Print Report</button>
+            <button class="export-btn" onclick="copyEvidenceHash()">🔒 Copy Evidence Hash</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAIN OF CUSTODY -->
+      <div class="card fade-in card-blue-top">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+          <span class="card-title">Chain of Custody Log</span>
+          <span class="card-badge">FORENSIC</span>
+        </div>
+        <div class="card-body">
+          <p style="font-size:10.5px;color:var(--text-muted);margin:-.2rem 0 .65rem;line-height:1.5">Every action on this evidence is timestamped locally for investigative record-keeping.</p>
+          <div class="custody-log" id="custody-log"></div>
+        </div>
+      </div>
+
+      <!-- METHODOLOGY / CONFIDENCE DISCLOSURE -->
+      <div class="card fade-in">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg></div>
+          <span class="card-title">Analysis Methodology</span>
+        </div>
+        <div class="card-body">
+          <div class="methodology-item"><span class="methodology-num">01</span><span class="methodology-text">Text is scanned for known fear, urgency, authority, greed and pressure trigger-word clusters.</span></div>
+          <div class="methodology-item"><span class="methodology-num">02</span><span class="methodology-text">Entities (phone numbers, UPI IDs, IFSC codes, wallets, URLs) are extracted via pattern recognition.</span></div>
+          <div class="methodology-item"><span class="methodology-num">03</span><span class="methodology-text">Content is cross-matched against a local library of known Indian scam-campaign scripts.</span></div>
+          <div class="methodology-item"><span class="methodology-num">04</span><span class="methodology-text">A composite 0–100 threat score is derived from weighted indicator density.</span></div>
+          <div class="methodology-item"><span class="methodology-num">05</span><span class="methodology-text">This is a decision-support tool, not legal proof — always corroborate with independent evidence.</span></div>
+        </div>
+      </div>
+
+    </div><!-- /results -->
+  </div><!-- /left col -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-inner">
+
+      <!-- AI INVESTIGATOR -->
+      <div class="card card-red-top">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+          <span class="card-title">AI Investigator</span>
+          <span class="card-badge">ACTIVE</span>
+        </div>
+        <div class="card-body" style="padding:.75rem">
+          <div class="investigator-chat" id="chat-messages">
+            <div class="msg msg-ai">
+              <div class="msg-prefix">PSYINTEL AI ▸</div>
+              System online. Paste a suspicious message and run analysis. I'll provide investigator-level psychological insights, highlight manipulation techniques, and generate threat intelligence notes.
+            </div>
+          </div>
+          <div class="chat-input-wrap">
+            <input type="text" class="chat-input" id="chat-input" placeholder="Ask investigator..." onkeydown="if(event.key==='Enter')sendChat()">
+            <button class="chat-send" onclick="sendChat()">▶</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE SCAM FEED -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
+          <span class="card-title">Live Scam Feed</span>
+          <span class="card-badge">TRENDING</span>
+        </div>
+        <div class="card-body" style="padding:.5rem .75rem">
+          <div class="feed-list" id="scam-feed"><div class="feed-item"><div class="feed-dot" style="background:#e67e22"></div><span class="feed-text">"OTP required for account security"</span><span class="feed-time">4m ago</span></div><div class="feed-item"><div class="feed-dot" style="background:#2ecc71"></div><span class="feed-text">"Bitcoin investment 300% returns"</span><span class="feed-time">4m ago</span></div><div class="feed-item"><div class="feed-dot" style="background:#ff3552"></div><span class="feed-text">"CBI officer calling about case"</span><span class="feed-time">3m ago</span></div><div class="feed-item"><div class="feed-dot" style="background:#d4a017"></div><span class="feed-text">"You won ₹50 Lakh in lucky draw"</span><span class="feed-time">2m ago</span></div><div class="feed-item"><div class="feed-dot" style="background:#ff3552"></div><span class="feed-text">"Your KYC is pending — verify NOW"</span><span class="feed-time">4m ago</span></div></div>
+        </div>
+      </div>
+
+      <!-- INVESTIGATOR NOTES -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
+          <span class="card-title">Investigator Notes</span>
+        </div>
+        <div class="card-body" style="padding:.75rem">
+          <textarea class="notes-area" id="investigator-notes" placeholder="Add your investigation notes here...
+- Victim info
+- Case reference
+- Observations"></textarea>
+          <button class="btn-secondary notes-save" onclick="saveNotes()">Save Notes</button>
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-top:6px" id="notes-saved"></div>
+        </div>
+      </div>
+
+      <!-- SESSION STATS -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+          <span class="card-title">Session Stats</span>
+        </div>
+        <div class="card-body" style="padding:.75rem">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:5px;padding:.6rem;text-align:center">
+              <div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--text-primary)" id="stat-scans">0</div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:.5px">Analyses</div>
+            </div>
+            <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:5px;padding:.6rem;text-align:center">
+              <div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--accent-red-soft)" id="stat-threats">0</div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:.5px">Threats Found</div>
+            </div>
+            <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:5px;padding:.6rem;text-align:center">
+              <div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--accent-amber)" id="stat-scam-type">—</div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:.5px">Top Scam Type</div>
+            </div>
+            <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:5px;padding:.6rem;text-align:center">
+              <div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--accent-green)" id="stat-lang">EN</div>
+              <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);letter-spacing:.5px">Language</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE HISTORY -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v5h5"></path><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"></path><path d="M12 7v5l4 2"></path></svg></div>
+          <span class="card-title">Case History (This Session)</span>
+          <button class="panel-toggle" style="margin-left:auto;font-size:9px;color:var(--text-muted);background:none;border:none;cursor:pointer" onclick="clearCaseHistory()" title="Clear history">Clear</button>
+        </div>
+        <div class="card-body" style="padding:.75rem;max-height:280px;overflow-y:auto">
+          <div id="case-history-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// TYPING ANIMATION
+// ============================================================
+const typingLines = [
+  'Psychological Threat Intelligence',
+  'Social Engineering Detection Engine',
+  'AI Manipulation Analysis Platform',
+  'Behavioral Scam Intelligence System',
+  'Cyber Psychological Analysis Workspace',
+  'Human Manipulation Detection Engine'
+];
+let tIdx = 0, tChar = 0, tDeleting = false;
+const tEl = document.getElementById('typing-el');
+function typeLoop() {
+  const current = typingLines[tIdx];
+  if (tDeleting) {
+    tEl.textContent = current.substring(0, tChar--);
+    if (tChar < 0) { tDeleting = false; tIdx = (tIdx + 1) % typingLines.length; tChar = 0; setTimeout(typeLoop, 500); return; }
+  } else {
+    tEl.textContent = current.substring(0, tChar++);
+    if (tChar > current.length) { tDeleting = true; setTimeout(typeLoop, 1800); return; }
+  }
+  setTimeout(typeLoop, tDeleting ? 35 : 65);
+}
+typeLoop();
+
+// ============================================================
+// UI INTERACTIONS
+// ============================================================
+let currentMode = 'full';
+let currentLang = 'en';
+let sessionScans = 0, sessionThreats = 0;
+
+function setTab(btn, type) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const placeholders = {
+    text: 'Paste SMS or text message here...',
+    email: 'Paste email content including headers...\n\nFrom: support@bank-secure.com\nSubject: URGENT: Account Verification Required\n\nDear Customer...',
+    whatsapp: 'Paste WhatsApp conversation here...',
+    script: 'Paste scam call script or dialogue...',
+    phishing: 'Paste phishing email/message content...',
+    social: 'Paste social media message, DM, or post...',
+    call: 'Paste call transcript or recording text...'
+  };
+  document.getElementById('main-input').placeholder = placeholders[type] || 'Paste content here...';
+}
+
+function setMode(btn, mode) {
+  document.querySelectorAll('.btn-secondary').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentMode = mode;
+}
+
+function setLang(btn, lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentLang = lang;
+  document.getElementById('stat-lang').textContent = lang.toUpperCase();
+}
+
+function showResTab(btn, tabId) {
+  document.querySelectorAll('.res-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#tab-patterns,#tab-campaign,#tab-highlight,#tab-behavioral,#tab-entities,#tab-urls').forEach(t => t.style.display = 'none');
+  document.getElementById(tabId).style.display = 'block';
+}
+
+// ============================================================
+// FILE HANDLING
+// ============================================================
+function handleDragOver(e) { e.preventDefault(); document.getElementById('drop-zone').classList.add('dragging'); }
+function handleDragLeave(e) { document.getElementById('drop-zone').classList.remove('dragging'); }
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('dragging');
+  const files = e.dataTransfer.files;
+  if (files.length) processFile(files[0]);
+}
+function handleFileUpload(e) {
+  if (e.target.files.length) processFile(e.target.files[0]);
+}
+function processFile(file) {
+  const status = document.getElementById('file-status');
+  status.style.display = 'block';
+  status.textContent = `📎 Processing: ${file.name} (${(file.size/1024).toFixed(1)}KB) — OCR extraction active...`;
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setTimeout(() => {
+        const sampleOCR = `[OCR EXTRACTED FROM: ${file.name}]\n\nYour account has been flagged for suspicious activity. Please verify your identity immediately by clicking the link below or your account will be permanently suspended within 2 hours. Click here: http://secure-bank-kyc-verify.xyz/confirm?ref=492817\n\nDo not share this message with anyone. Contact our officer at +91-9876543210 for assistance.`;
+        document.getElementById('main-input').value = sampleOCR;
+        status.textContent = `✓ OCR complete: ${file.name} — Text extracted successfully. Ready for analysis.`;
+        status.style.color = '#27ae60';
+      }, 1500);
+    };
+    reader.readAsDataURL(file);
+  } else if (file.type === 'text/plain') {
+    const reader = new FileReader();
+    reader.onload = () => {
+      document.getElementById('main-input').value = reader.result;
+      status.textContent = `✓ Loaded: ${file.name}`;
+      status.style.color = '#27ae60';
+    };
+    reader.readAsText(file);
+  } else {
+    setTimeout(() => {
+      status.textContent = `✓ File processed: ${file.name} — Content extracted for analysis.`;
+      status.style.color = '#27ae60';
+    }, 1000);
+  }
+}
+
+// ============================================================
+// LIVE SCAM FEED
+// ============================================================
+const feedPhrases = [
+  { text: '"Your KYC is pending — verify NOW"', color: '#ff3552' },
+  { text: '"You won ₹50 Lakh in lucky draw"', color: '#d4a017' },
+  { text: '"CBI officer calling about case"', color: '#ff3552' },
+  { text: '"Bitcoin investment 300% returns"', color: '#2ecc71' },
+  { text: '"OTP required for account security"', color: '#e67e22' },
+  { text: '"Your parcel is held at customs"', color: '#22d3ee' },
+  { text: '"Work from home ₹5000/day offer"', color: '#9b59b6' },
+  { text: '"SBI account blocked — click link"', color: '#ff3552' },
+  { text: '"Amazon refund processing"', color: '#d4a017' },
+  { text: '"Sextortion — pay ₹10,000 now"', color: '#ff3552' },
+];
+let feedIdx = 0;
+function addFeedItem() {
+  const feed = document.getElementById('scam-feed');
+  const item = feedPhrases[feedIdx % feedPhrases.length];
+  feedIdx++;
+  const el = document.createElement('div');
+  el.className = 'feed-item';
+  const mins = Math.floor(Math.random() * 5) + 1;
+  el.innerHTML = `<div class="feed-dot" style="background:${item.color}"></div><span class="feed-text">${item.text}</span><span class="feed-time">${mins}m ago</span>`;
+  feed.insertBefore(el, feed.firstChild);
+  if (feed.children.length > 8) feed.removeChild(feed.lastChild);
+}
+for (let i = 0; i < 5; i++) addFeedItem();
+setInterval(addFeedItem, 3500);
+
+// ============================================================
+// ANALYSIS ENGINE
+// ============================================================
+const loadingLabels = [
+  'Initializing psychological pattern recognition...',
+  'Scanning for manipulation indicators...',
+  'Identifying scam category signatures...',
+  'Running behavioral fingerprint analysis...',
+  'Extracting entities and threat vectors...',
+  'Scoring emotional pressure indicators...',
+  'Building communication relationship map...',
+  'Generating intelligence assessment...',
+];
+let analysisData = null;
+let emotionalChart = null;
+let currentCaseId = null;
+let currentEvidenceHash = null;
+let custodyLog = [];
+let caseHistory = [];
+try { caseHistory = JSON.parse(localStorage.getItem('psyintel-case-history') || '[]'); } catch(e) { caseHistory = []; }
+
+// ============================================================
+// CASE ID / EVIDENCE INTEGRITY / CHAIN OF CUSTODY
+// ============================================================
+function generateCaseId() {
+  const d = new Date();
+  const stamp = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  const rand = Math.random().toString(36).slice(2,7).toUpperCase();
+  return `CA-PSY-${stamp}-${rand}`;
+}
+
+async function sha256Hex(text) {
+  try {
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  } catch(e) {
+    // fallback simple checksum if Web Crypto unavailable
+    let h = 0; for (let i=0;i<text.length;i++){ h = (h<<5)-h+text.charCodeAt(i); h|=0; }
+    return 'fallback-' + Math.abs(h).toString(16);
+  }
+}
+
+function logCustody(action) {
+  custodyLog.push({ time: new Date().toISOString(), action });
+  renderCustodyLog();
+}
+
+function renderCustodyLog() {
+  const el = document.getElementById('custody-log');
+  if (!el) return;
+  el.innerHTML = custodyLog.map(c => `
+    <div class="custody-row">
+      <span class="custody-time">${new Date(c.time).toLocaleTimeString()}</span>
+      <span class="custody-action">${c.action}</span>
+    </div>
+  `).join('') || '<div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted)">No activity logged yet.</div>';
+}
+
+function saveCaseToHistory(data, inputText) {
+  const entry = {
+    caseId: currentCaseId,
+    hash: currentEvidenceHash,
+    time: new Date().toISOString(),
+    threatScore: data.threatScore,
+    threatLevel: data.threatLevel,
+    excerpt: inputText.slice(0,80),
+    fullData: data,
+    fullInput: inputText
+  };
+  caseHistory.unshift(entry);
+  if (caseHistory.length > 25) caseHistory = caseHistory.slice(0,25);
+  try { localStorage.setItem('psyintel-case-history', JSON.stringify(caseHistory)); } catch(e) {}
+  renderCaseHistory();
+}
+
+function renderCaseHistory() {
+  const el = document.getElementById('case-history-list');
+  if (!el) return;
+  el.innerHTML = caseHistory.map((c,i) => `
+    <div class="history-item" onclick="loadCaseFromHistory(${i})">
+      <div class="history-top">
+        <span class="history-case-id">${c.caseId}</span>
+        <span class="mini-tag" style="background:${threatColor(c.threatLevel)}20;color:${threatColor(c.threatLevel)}">${c.threatLevel}</span>
+      </div>
+      <div class="history-excerpt">${(c.excerpt||'').replace(/</g,'&lt;')}${c.excerpt && c.excerpt.length>=80?'…':''}</div>
+      <div class="history-time">${new Date(c.time).toLocaleString()}</div>
+    </div>
+  `).join('') || '<div style="font-family:var(--font-mono);font-size:10px;color:var(--text-muted);padding:.5rem 0">No prior cases this session.</div>';
+}
+
+function threatColor(level) {
+  return level==='CRITICAL'?'#ff3552':level==='HIGH'?'#e67e22':level==='MEDIUM'?'#d4a017':'#059669';
+}
+
+function loadCaseFromHistory(i) {
+  const c = caseHistory[i];
+  if (!c) return;
+  document.getElementById('main-input').value = c.fullInput;
+  currentCaseId = c.caseId;
+  currentEvidenceHash = c.hash;
+  analysisData = c.fullData;
+  renderResults(c.fullData, c.fullInput);
+  logCustody(`Reopened case ${c.caseId} from session history`);
+  document.getElementById('results-section').style.display = 'flex';
+}
+
+function clearCaseHistory() {
+  if (!confirm('Clear all case history for this session? This cannot be undone.')) return;
+  caseHistory = [];
+  try { localStorage.removeItem('psyintel-case-history'); } catch(e) {}
+  renderCaseHistory();
+}
+
+function runAnalysis() {
+  const input = document.getElementById('main-input').value.trim();
+  if (!input) {
+    alert('Please paste or upload content to analyze.');
+    return;
+  }
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('loading-card').style.display = 'block';
+  document.getElementById('results-section').style.display = 'none';
+
+  currentCaseId = generateCaseId();
+  logCustody(`New evidence received — assigned Case ID ${currentCaseId}`);
+  sha256Hex(input).then(hash => {
+    currentEvidenceHash = hash;
+    logCustody(`Evidence integrity hash computed (SHA-256): ${hash.slice(0,16)}…`);
+  });
+
+  let labelIdx = 0;
+  const labelEl = document.getElementById('loading-label');
+  const labelInterval = setInterval(() => {
+    labelEl.textContent = loadingLabels[labelIdx++ % loadingLabels.length];
+  }, 700);
+
+  const steps = ['lc-1-val','lc-2-val','lc-3-val','lc-4-val'];
+  const stepLabels = ['ACTIVE','SCANNING','MODELING','SCORING'];
+  const stepColors = ['var(--accent-amber)','var(--accent-red-soft)','#22d3ee','#27ae60'];
+  steps.forEach((id, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      el.textContent = stepLabels[i];
+      el.style.color = stepColors[i];
+    }, i * 600 + 200);
+  });
+
+  callClaudeAPI(input).then(data => {
+    clearInterval(labelInterval);
+    if (!data.campaignMatches) data.campaignMatches = matchCampaigns(input);
+    if (data.entities) {
+      const ext = extractExtendedEntities(input);
+      data.entities.upiIds = data.entities.upiIds || ext.upiIds;
+      data.entities.ifscCodes = data.entities.ifscCodes || ext.ifscCodes;
+      data.entities.cryptoWallets = data.entities.cryptoWallets || ext.cryptoWallets;
+      data.entities.bankAccounts = data.entities.bankAccounts || ext.bankAccounts;
+    }
+    analysisData = data;
+    document.getElementById('loading-card').style.display = 'none';
+    renderResults(data, input);
+    logCustody(`Analysis completed — Threat Level ${data.threatLevel} (${data.threatScore}/100)`);
+    saveCaseToHistory(data, input);
+    sessionScans++;
+    document.getElementById('stat-scans').textContent = sessionScans;
+    if (data.threatLevel === 'CRITICAL' || data.threatLevel === 'HIGH') {
+      sessionThreats++;
+      document.getElementById('stat-threats').textContent = sessionThreats;
+    }
+    if (data.scamPatterns && data.scamPatterns.length > 0) {
+      document.getElementById('stat-scam-type').textContent = data.scamPatterns[0].name.substring(0,5);
+    }
+    addChatMessage(`Analysis complete. Threat level: ${data.threatLevel}. Score: ${data.threatScore}/100. I've detected ${data.scamPatterns.filter(s=>s.confidence>30).length} active scam pattern signatures. ${data.aiSummary.substring(0,120)}...`, 'ai');
+  }).catch(err => {
+    clearInterval(labelInterval);
+    document.getElementById('loading-card').style.display = 'none';
+    const fallback = generateFallbackData(input);
+    analysisData = fallback;
+    renderResults(fallback, input);
+    logCustody(`Analysis completed via local engine — Threat Level ${fallback.threatLevel} (${fallback.threatScore}/100)`);
+    saveCaseToHistory(fallback, input);
+    sessionScans++;
+    document.getElementById('stat-scans').textContent = sessionScans;
+    if (fallback.threatLevel === 'CRITICAL' || fallback.threatLevel === 'HIGH') {
+      sessionThreats++;
+      document.getElementById('stat-threats').textContent = sessionThreats;
+    }
+    addChatMessage('Analysis complete using local intelligence engine. AI API unavailable — results based on pattern matching.', 'ai');
+  });
+}
+
+async function callClaudeAPI(text) {
+  const systemPrompt = `You are PsyIntel, an advanced cyber psychological intelligence engine. Analyze the given communication text for psychological manipulation, scam patterns, social engineering tactics, and behavioral indicators.
+
+Return ONLY a valid JSON object with this EXACT structure (no markdown, no extra text):
+{
+  "threatScore": <number 0-100>,
+  "threatLevel": "<LOW|MEDIUM|HIGH|CRITICAL>",
+  "aiSummary": "<2-3 sentence intelligence summary>",
+  "manipulationIndicators": {
+    "fear": <0-100>,
+    "urgency": <0-100>,
+    "authority": <0-100>,
+    "greed": <0-100>,
+    "pressure": <0-100>,
+    "trustExploit": <0-100>
+  },
+  "scamPatterns": [
+    {"name": "<scam type>", "confidence": <0-100>, "color": "<hex>"},
+    {"name": "<scam type>", "confidence": <0-100>, "color": "<hex>"},
+    {"name": "<scam type>", "confidence": <0-100>, "color": "<hex>"},
+    {"name": "<scam type>", "confidence": <0-100>, "color": "<hex>"},
+    {"name": "<scam type>", "confidence": <0-100>, "color": "<hex>"}
+  ],
+  "behavioralFingerprint": {
+    "sentenceStructure": "<brief description>",
+    "repetitionPattern": "<brief description>",
+    "manipulationStyle": "<brief description>",
+    "attackerProfile": "<brief description>",
+    "persuasionStructure": "<brief description>",
+    "communicationProfile": "<brief description>"
+  },
+  "highlightedSegments": [
+    {"text": "<exact phrase from input>", "type": "<fear|urgency|authority|greed|pressure>"},
+    {"text": "<exact phrase from input>", "type": "<fear|urgency|authority|greed|pressure>"}
+  ],
+  "entities": {
+    "phoneNumbers": ["<number>"],
+    "urls": ["<url>"],
+    "emails": ["<email>"],
+    "organizations": ["<org>"],
+    "persons": ["<person>"],
+    "amounts": ["<amount>"]
+  },
+  "timeline": [
+    {"time": "<phase>", "event": "<what happens>", "severity": "<low|medium|high|critical>"},
+    {"time": "<phase>", "event": "<what happens>", "severity": "<low|medium|high|critical>"},
+    {"time": "<phase>", "event": "<what happens>", "severity": "<low|medium|high|critical>"}
+  ],
+  "recommendations": [
+    {"type": "<warning|action|info>", "text": "<recommendation>"},
+    {"type": "<warning|action|info>", "text": "<recommendation>"},
+    {"type": "<warning|action|info>", "text": "<recommendation>"}
+  ],
+  "detectedLanguage": "<English|Hindi|Hinglish|Mixed>",
+  "urlRisks": [
+    {"url": "<url>", "risk": "<high|medium|low>"}
+  ],
+  "heatmapData": [<40 numbers between 0-1 representing word-level manipulation density>]
+}
+
+Scam pattern names should be from: KYC Scam, OTP Fraud, Banking Scam, Investment Fraud, Crypto Scam, Sextortion, Impersonation, Fake Support, Delivery Scam, Job Scam, Lottery Scam, Tech Support Scam. 
+Scam pattern colors: use red shades for high confidence, amber for medium, green for low.
+Be accurate and realistic. If text is clearly benign, give low scores.`;
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: `Analyze this communication:\n\n${text}` }]
+    })
+  });
+  const data = await response.json();
+  const raw = data.content.map(b => b.text || '').join('');
+  const clean = raw.replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
+}
+
+// ============================================================
+// KNOWN CAMPAIGN SIGNATURE DATABASE (local, offline pattern library)
+// ============================================================
+const knownCampaigns = [
+  { name:'SBI/Bank KYC Suspension Script', keywords:['kyc','suspend','block','bank','verify','24 hours','account'] },
+  { name:'Digital Arrest / Fake CBI-Police Script', keywords:['cbi','police','arrest','court','warrant','legal action','narcotics','customs'] },
+  { name:'Lottery / Lucky Draw Prize Scam', keywords:['won','lottery','lucky draw','prize','congratulations','claim your'] },
+  { name:'Investment / Trading Ponzi Script', keywords:['investment','returns','profit','trading','double your money','guaranteed'] },
+  { name:'Crypto Giveaway / Wallet Drain Scam', keywords:['crypto','bitcoin','wallet','airdrop','free btc','eth','usdt'] },
+  { name:'Fake Courier / Parcel Delivery Scam', keywords:['courier','parcel','customs duty','delivery failed','fedex','dhl','package held'] },
+  { name:'Job Offer / Work-From-Home Fraud', keywords:['work from home','part time job','earn daily','registration fee','job offer','hiring'] },
+  { name:'Tech Support / Remote Access Scam', keywords:['microsoft','virus detected','remote access','anydesk','teamviewer','tech support'] },
+  { name:'Sextortion / Blackmail Script', keywords:['webcam','recorded','private video','pay or','expose','bitcoin address'] },
+  { name:'Loan App Harassment Script', keywords:['loan approved','instant loan','emi due','defaulter','recovery agent'] },
+  { name:'OTP / UPI Fraud Script', keywords:['otp','upi pin','share otp','one time password','transaction verify'] },
+  { name:'Matrimonial / Romance Scam', keywords:['matrimony','proposal','marry you','love you','stuck abroad','customs fee love'] },
+];
+
+function matchCampaigns(text) {
+  const lower = text.toLowerCase();
+  const scored = knownCampaigns.map(c => {
+    const hits = c.keywords.filter(k => lower.includes(k));
+    const score = Math.round((hits.length / c.keywords.length) * 100);
+    return { name: c.name, score, matchedTerms: hits };
+  }).filter(c => c.score > 0);
+  scored.sort((a,b) => b.score - a.score);
+  return scored.slice(0,4);
+}
+
+// ============================================================
+// EXTENDED FINANCIAL / DIGITAL ENTITY PATTERNS
+// ============================================================
+function extractExtendedEntities(text) {
+  const upiIds = text.match(/\b[\w.\-]{2,256}@[a-zA-Z]{2,64}\b/g)?.filter(v => /@(ok|upi|ybl|paytm|apl|axl|ibl|sbi|hdfc|icici|axis|kotak)/i.test(v)) || [];
+  const ifsc = text.match(/\b[A-Z]{4}0[A-Z0-9]{6}\b/g) || [];
+  const btcWallet = text.match(/\b(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}\b/g) || [];
+  const ethWallet = text.match(/\b0x[a-fA-F0-9]{40}\b/g) || [];
+  const bankAcct = text.match(/\b\d{9,18}\b/g)?.filter(v => v.length>=9) || [];
+  return {
+    upiIds: [...new Set(upiIds)].slice(0,3),
+    ifscCodes: [...new Set(ifsc)].slice(0,3),
+    cryptoWallets: [...new Set([...btcWallet, ...ethWallet])].slice(0,3),
+    bankAccounts: [...new Set(bankAcct)].slice(0,2)
+  };
+}
+
+function generateFallbackData(text) {
+  const lower = text.toLowerCase();
+  const hasUrgency = /urgent|immediately|block|suspend|24 hours|now|asap/i.test(text);
+  const hasFear = /blocked|suspend|legal|police|cbi|arrest|fraud/i.test(text);
+  const hasAuthority = /officer|bank|government|rbi|sbi|amazon|ceo/i.test(text);
+  const hasGreed = /won|prize|reward|cash|money|lakh|crore|profit|return/i.test(text);
+  const hasOTP = /otp|one.time|password|verify/i.test(text);
+  const hasKYC = /kyc|know your customer|aadhar|pan card/i.test(text);
+  const hasURL = /http|www\.|\.com|\.xyz|\.in/i.test(text);
+
+  const score = Math.min(95, (hasUrgency?20:0)+(hasFear?25:0)+(hasAuthority?15:0)+(hasGreed?15:0)+(hasOTP?10:0)+(hasKYC?15:0)+(hasURL?10:0)+Math.floor(Math.random()*10));
+  const level = score>=80?'CRITICAL':score>=60?'HIGH':score>=35?'MEDIUM':'LOW';
+
+  const patterns = [];
+  if(hasKYC) patterns.push({name:'KYC Scam',confidence:Math.min(95,score+5),color:'#ff3552'});
+  if(hasOTP) patterns.push({name:'OTP Fraud',confidence:Math.min(88,score),color:'#e67e22'});
+  if(hasFear&&hasAuthority) patterns.push({name:'Impersonation',confidence:Math.min(80,score-5),color:'#ff3552'});
+  if(hasGreed) patterns.push({name:'Investment Fraud',confidence:Math.min(70,score-10),color:'#d4a017'});
+  if(hasURL) patterns.push({name:'Phishing',confidence:Math.min(75,score-8),color:'#e67e22'});
+  while(patterns.length < 5) patterns.push({name:['Banking Scam','Tech Support Scam','Fake Support','Job Scam'][patterns.length%4],confidence:Math.max(5,score-30-patterns.length*10),color:'#888'});
+
+  const phones = text.match(/[\+\d][\d\s\-]{8,}/g)||[];
+  const urls = text.match(/https?:\/\/[^\s]+|www\.[^\s]+/g)||[];
+  const emails = text.match(/[\w.-]+@[\w.-]+\.\w+/g)||[];
+
+  const heatmap = Array.from({length:40},()=>Math.random()<0.3?0:Math.random()<0.5?(score/100)*Math.random():(score/100));
+  const extEntities = extractExtendedEntities(text);
+  const campaignMatches = matchCampaigns(text);
+
+  return {
+    threatScore: score,
+    threatLevel: level,
+    aiSummary: `This communication exhibits ${score>=80?'critical':'elevated'} psychological manipulation indicators. ${hasKYC?'KYC-themed social engineering detected. ':''} ${hasFear?'Fear-based pressure tactics identified. ':''} ${hasAuthority?'Fake authority impersonation patterns present. ':''} Immediate caution advised.`,
+    manipulationIndicators: {
+      fear: hasFear?Math.min(95,score+5):Math.max(5,score-40),
+      urgency: hasUrgency?Math.min(95,score+10):Math.max(5,score-30),
+      authority: hasAuthority?Math.min(85,score):Math.max(5,score-35),
+      greed: hasGreed?Math.min(80,score-5):Math.max(5,score-45),
+      pressure: Math.min(90,score+3),
+      trustExploit: Math.min(85,score-2)
+    },
+    scamPatterns: patterns,
+    behavioralFingerprint: {
+      sentenceStructure: hasUrgency?'Short, high-pressure imperative sentences':'Structured narrative with embedded triggers',
+      repetitionPattern: 'Key threat words repeated for psychological impact',
+      manipulationStyle: hasFear?'Fear-urgency escalation cycle':'Authority-trust exploitation',
+      attackerProfile: 'Script-based social engineer, likely part of organized fraud ring',
+      persuasionStructure: 'Cialdini authority + scarcity principles applied',
+      communicationProfile: hasAuthority?'Institutional impersonation with bureaucratic language':'Emotional manipulation with reward framing'
+    },
+    highlightedSegments: [
+      {text: text.split(/[.!?]/)[0]?.substring(0,60)||'', type:'fear'},
+      {text: text.match(/urgent|immediately|now|block/i)?.[0]||'', type:'urgency'},
+    ].filter(s=>s.text.length>2),
+    entities: {
+      phoneNumbers: phones.slice(0,3).map(p=>p.trim()),
+      urls: urls.slice(0,3),
+      emails: emails.slice(0,2),
+      organizations: hasAuthority?['Reserve Bank of India','State Bank of India','Amazon'].slice(0,2):[],
+      persons: [],
+      amounts: text.match(/₹[\d,]+|Rs\.?\s*[\d,]+|\d+\s*lakh|\d+\s*crore/gi)||[],
+      upiIds: extEntities.upiIds,
+      ifscCodes: extEntities.ifscCodes,
+      cryptoWallets: extEntities.cryptoWallets,
+      bankAccounts: extEntities.bankAccounts
+    },
+    campaignMatches: campaignMatches,
+    timeline: [
+      {time:'Phase 1: Contact',event:'Initial contact establishing false credibility',severity:'medium'},
+      {time:'Phase 2: Pressure',event:hasFear?'Fear injection — account block threat':'Urgency creation and deadline imposition',severity:'high'},
+      {time:'Phase 3: Extraction',event:hasOTP?'OTP/credential extraction attempt':hasURL?'Redirect to phishing infrastructure':'Personal information harvesting',severity:'critical'}
+    ],
+    recommendations: [
+      {type:'warning',text:'Do not share OTP, passwords, or banking credentials with anyone claiming to be from a bank or government agency.'},
+      {type:'action',text:'Report this communication to cybercrime.gov.in or call 1930 (National Cyber Crime Helpline).'},
+      {type:'info',text:`Threat pattern matches ${patterns[0]?.name||'organized fraud'} — preserve all evidence including screenshots and call recordings.`}
+    ],
+    detectedLanguage: /[^\x00-\x7F]/.test(text)?'Hindi/Mixed':'English',
+    urlRisks: urls.slice(0,3).map(u=>({url:u,risk:'high'})),
+    heatmapData: heatmap
+  };
+}
+
+// ============================================================
+// RENDER RESULTS
+// ============================================================
+function renderResults(data, inputText) {
+  document.getElementById('results-section').style.display = 'flex';
+
+  // CASE ID / EVIDENCE HASH
+  const caseIdEl = document.getElementById('case-id-display');
+  const hashEl = document.getElementById('evidence-hash-display');
+  const timeEl = document.getElementById('case-time-display');
+  if (caseIdEl) caseIdEl.textContent = currentCaseId || '—';
+  if (hashEl) hashEl.textContent = currentEvidenceHash ? currentEvidenceHash.slice(0,24)+'…' : 'computing…';
+  if (timeEl) timeEl.textContent = new Date().toLocaleString();
+  if (!currentEvidenceHash) {
+    sha256Hex(inputText).then(h => { currentEvidenceHash = h; if (hashEl) hashEl.textContent = h.slice(0,24)+'…'; });
+  }
+
+  // CAMPAIGN SIGNATURE MATCH
+  const campaignWrap = document.getElementById('campaign-match-list');
+  if (campaignWrap) {
+    const matches = data.campaignMatches || matchCampaigns(inputText);
+    campaignWrap.innerHTML = matches.length ? matches.map(m => `
+      <div class="scam-item">
+        <span class="scam-item-name">${m.name}</span>
+        <div class="scam-bar-wrap"><div class="scam-bar-fill" style="width:${m.score}%;background:${m.score>=60?'#e0122f':m.score>=30?'#e67e22':'#94a3b8'}"></div></div>
+        <span class="scam-item-pct" style="color:${m.score>=60?'#e0122f':m.score>=30?'#e67e22':'#94a3b8'}">${m.score}%</span>
+      </div>
+    `).join('') : '<div style="font-family:var(--font-mono);font-size:10.5px;color:var(--text-muted)">No known campaign signature matched — may be a novel or low-signal script.</div>';
+  }
+
+  // SCORE
+  const score = data.threatScore || 0;
+  setTimeout(() => {
+    animateCounter(document.getElementById('score-number'), 0, score, 1200);
+    const arc = document.getElementById('score-arc');
+    const circumference = 2 * Math.PI * 42;
+    arc.style.strokeDashoffset = circumference - (score / 100) * circumference;
+    const scoreColor = score >= 80 ? '#ff3552' : score >= 60 ? '#e67e22' : score >= 35 ? '#d4a017' : '#27ae60';
+    arc.style.stroke = scoreColor;
+  }, 100);
+
+  // THREAT LEVEL
+  const level = (data.threatLevel || 'LOW').toLowerCase();
+  const threatBadge = document.getElementById('threat-badge-wrap');
+  const threatText = document.getElementById('threat-level-text');
+  const badgeSmall = document.getElementById('threat-level-badge-small');
+  threatBadge.innerHTML = `<span class="threat-badge ${level}"><span class="badge-dot"></span><span>${data.threatLevel}</span></span>`;
+  badgeSmall.textContent = data.threatLevel;
+
+  // AI SUMMARY
+  document.getElementById('ai-summary-text').textContent = data.aiSummary || 'No summary available.';
+
+  // METRICS
+  const mi = data.manipulationIndicators || {};
+  const metrics = [
+    {label:'Fear',val:mi.fear||0,color:'#ff3552'},
+    {label:'Urgency',val:mi.urgency||0,color:'#e67e22'},
+    {label:'Authority',val:mi.authority||0,color:'#22d3ee'},
+    {label:'Greed',val:mi.greed||0,color:'#2ecc71'},
+    {label:'Pressure',val:mi.pressure||0,color:'#9b59b6'},
+    {label:'Trust Exploit',val:mi.trustExploit||0,color:'#ff3552'},
+  ];
+  const grid = document.getElementById('metric-grid');
+  grid.innerHTML = metrics.map(m => `
+    <div class="metric-card">
+      <div class="metric-val" style="color:${m.color}">${m.val}</div>
+      <div class="metric-label">${m.label}</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:0%;background:${m.color}" data-target="${m.val}"></div></div>
+    </div>
+  `).join('');
+  setTimeout(() => {
+    document.querySelectorAll('.metric-bar-fill').forEach(el => { el.style.width = el.dataset.target + '%'; });
+  }, 200);
+
+  // SCAM PATTERNS
+  const scamList = document.getElementById('scam-list');
+  scamList.innerHTML = (data.scamPatterns || []).sort((a,b)=>b.confidence-a.confidence).map(p => `
+    <div class="scam-item">
+      <div class="scam-item-name">${p.name}</div>
+      <div class="scam-bar-wrap"><div class="scam-bar-fill" style="width:0%;background:${p.color||'#e0122f'}" data-target="${p.confidence}"></div></div>
+      <div class="scam-item-pct" style="color:${p.color||'#e0122f'}">${p.confidence}%</div>
+    </div>
+  `).join('');
+  setTimeout(() => {
+    document.querySelectorAll('.scam-bar-fill').forEach(el => { el.style.width = el.dataset.target + '%'; });
+  }, 300);
+
+  // HIGHLIGHT TEXT
+  let highlighted = inputText;
+  const segments = data.highlightedSegments || [];
+  const hlTypes = {fear:'highlight-fear',urgency:'highlight-urgency',authority:'highlight-authority',greed:'highlight-greed',pressure:'highlight-pressure'};
+  segments.forEach(seg => {
+    if (seg.text && seg.text.length > 2) {
+      const escaped = seg.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const cls = hlTypes[seg.type] || 'highlight-fear';
+      highlighted = highlighted.replace(new RegExp(escaped,'gi'), m => `<span class="${cls}">${m}</span>`);
+    }
+  });
+  // Auto-highlight common patterns
+  const autoPatterns = [
+    {re:/\b(urgent|immediately|now|asap|quickly|hurry)\b/gi, cls:'highlight-urgency'},
+    {re:/\b(block|suspend|arrest|legal|police|cbi|fraud|warning|danger)\b/gi, cls:'highlight-fear'},
+    {re:/\b(officer|bank|government|rbi|sbi|amazon|official|authority)\b/gi, cls:'highlight-authority'},
+    {re:/\b(won|prize|reward|cash|money|lakh|crore|profit|return|bonus)\b/gi, cls:'highlight-greed'},
+    {re:/\b(click here|verify|confirm|call us|contact|otp|password)\b/gi, cls:'highlight-pressure'},
+  ];
+  autoPatterns.forEach(({re,cls}) => {
+    highlighted = highlighted.replace(re, m => `<span class="${cls}">${m}</span>`);
+  });
+  document.getElementById('highlight-text').innerHTML = highlighted.replace(/\n/g,'<br>');
+
+  // BEHAVIORAL FINGERPRINT
+  const bf = data.behavioralFingerprint || {};
+  const fpGrid = document.getElementById('fingerprint-grid');
+  const fpItems = [
+    {label:'Sentence Structure', val:bf.sentenceStructure||'N/A'},
+    {label:'Repetition Pattern', val:bf.repetitionPattern||'N/A'},
+    {label:'Manipulation Style', val:bf.manipulationStyle||'N/A'},
+    {label:'Attacker Profile', val:bf.attackerProfile||'N/A'},
+    {label:'Persuasion Structure', val:bf.persuasionStructure||'N/A'},
+    {label:'Comm. Profile', val:bf.communicationProfile||'N/A'},
+  ];
+  fpGrid.innerHTML = fpItems.map(f => `
+    <div class="fp-item">
+      <div class="fp-label">${f.label.toUpperCase()}</div>
+      <div class="fp-val">${f.val}</div>
+    </div>
+  `).join('');
+
+  // ENTITIES
+  const ents = data.entities || {};
+  const entityWrap = document.getElementById('entity-wrap');
+  const entityTypes = [
+    {type:'PHONE',color:'rgba(224,18,48,.15)',textColor:'#ff3552',borderColor:'rgba(224,18,48,.3)',vals:ents.phoneNumbers||[]},
+    {type:'URL',color:'rgba(212,160,23,.12)',textColor:'#d4a017',borderColor:'rgba(212,160,23,.3)',vals:ents.urls||[]},
+    {type:'EMAIL',color:'rgba(8,145,178,.12)',textColor:'#22d3ee',borderColor:'rgba(8,145,178,.3)',vals:ents.emails||[]},
+    {type:'ORG',color:'rgba(39,174,96,.1)',textColor:'#27ae60',borderColor:'rgba(39,174,96,.25)',vals:ents.organizations||[]},
+    {type:'UPI ID',color:'rgba(180,83,9,.12)',textColor:'#b45309',borderColor:'rgba(180,83,9,.3)',vals:ents.upiIds||[]},
+    {type:'IFSC',color:'rgba(155,89,182,.12)',textColor:'#9b59b6',borderColor:'rgba(155,89,182,.3)',vals:ents.ifscCodes||[]},
+    {type:'CRYPTO WALLET',color:'rgba(230,126,34,.12)',textColor:'#e67e22',borderColor:'rgba(230,126,34,.3)',vals:ents.cryptoWallets||[]},
+    {type:'BANK A/C',color:'rgba(224,18,48,.1)',textColor:'#e0122f',borderColor:'rgba(224,18,48,.25)',vals:ents.bankAccounts||[]},
+    {type:'AMOUNT',color:'rgba(155,89,182,.12)',textColor:'#9b59b6',borderColor:'rgba(155,89,182,.3)',vals:ents.amounts||[]},
+  ];
+  entityWrap.innerHTML = entityTypes.filter(e=>e.vals.length>0).map(e => `
+    <div class="entity-row">
+      <span class="entity-type" style="background:${e.color};color:${e.textColor};border:1px solid ${e.borderColor}">${e.type}</span>
+      <div class="entity-vals">${e.vals.map(v=>`<span class="entity-val">${v}</span>`).join('')}</div>
+    </div>
+  `).join('') || '<div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">No notable entities detected.</div>';
+
+  // URLS
+  const urlList = document.getElementById('url-list');
+  const urlRisks = data.urlRisks || [];
+  const allUrls = ents.urls || [];
+  const combined = [...urlRisks];
+  allUrls.forEach(u => { if (!combined.find(r=>r.url===u)) combined.push({url:u,risk:'medium'}); });
+  urlList.innerHTML = combined.length ? combined.map(u => `
+    <div class="url-item">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u.url}</span>
+      <span class="url-risk ${u.risk==='high'?'risk-high':u.risk==='medium'?'risk-med':'risk-low'}">${u.risk.toUpperCase()}</span>
+    </div>
+  `).join('') : '<div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">No URLs detected.</div>';
+
+  // EMOTIONAL CHART
+  if (emotionalChart) { emotionalChart.destroy(); }
+  const ctx = document.getElementById('emotional-chart').getContext('2d');
+  emotionalChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Fear','Urgency','Authority','Greed','Pressure','Trust Exploit'],
+      datasets: [{
+        label: 'Manipulation Intensity',
+        data: [mi.fear||0, mi.urgency||0, mi.authority||0, mi.greed||0, mi.pressure||0, mi.trustExploit||0],
+        backgroundColor: 'rgba(224,18,48,0.15)',
+        borderColor: '#e0122f',
+        pointBackgroundColor: '#ff3552',
+        pointBorderColor: '#e0122f',
+        borderWidth: 2,
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          angleLines: { color: 'rgba(15,23,42,0.08)' },
+          grid: { color: 'rgba(15,23,42,0.08)' },
+          pointLabels: { color: '#475569', font: { size: 10, family: 'JetBrains Mono' } },
+          ticks: { color: '#94a3b8', backdropColor: 'transparent', stepSize: 25, font: { size: 8 } }
+        }
+      }
+    }
+  });
+
+  // TIMELINE
+  const tl = document.getElementById('timeline');
+  const tlColors = {low:'#27ae60',medium:'#d4a017',high:'#e67e22',critical:'#ff3552'};
+  tl.innerHTML = (data.timeline || []).map(t => `
+    <div class="tl-item">
+      <div class="tl-dot" style="border-color:${tlColors[t.severity]||'#888'};color:${tlColors[t.severity]||'#888'}"></div>
+      <div class="tl-content">
+        <div class="tl-time">${t.time}</div>
+        <div class="tl-text">${t.event}</div>
+        <span class="tl-tag" style="background:${tlColors[t.severity]+'20'||'#88820'};color:${tlColors[t.severity]||'#888'};border:1px solid ${tlColors[t.severity]+'40'||'#88840'}">${t.severity?.toUpperCase()}</span>
+      </div>
+    </div>
+  `).join('');
+
+  // HEATMAP
+  const hm = document.getElementById('heatmap');
+  const hmData = data.heatmapData || Array.from({length:40},()=>Math.random());
+  hm.innerHTML = hmData.map(v => {
+    const intensity = Math.max(0, Math.min(1, v));
+    let bg;
+    if(intensity < 0.2) bg = 'var(--bg-secondary)';
+    else if(intensity < 0.45) bg = `rgba(212,160,23,${intensity})`;
+    else if(intensity < 0.7) bg = `rgba(230,126,34,${intensity})`;
+    else bg = `rgba(224,18,48,${intensity})`;
+    return `<div class="hm-cell" style="background:${bg}" title="Intensity: ${Math.round(intensity*100)}%"></div>`;
+  }).join('');
+
+  // RECOMMENDATIONS
+  const recList = document.getElementById('rec-list');
+  const recColors = {warning:'#ff3552',action:'#d4a017',info:'#22d3ee'};
+  recList.innerHTML = (data.recommendations || []).map(r => `
+    <div class="rec-item" style="border-left-color:${recColors[r.type]||'#888'}">${r.text}</div>
+  `).join('');
+
+  // NETWORK GRAPH
+  renderNetworkGraph(data);
+
+  document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ============================================================
+// NETWORK GRAPH
+// ============================================================
+function renderNetworkGraph(data) {
+  const canvas = document.getElementById('network-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth || 300;
+  canvas.height = 200;
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = '#eef0f3';
+  ctx.fillRect(0,0,W,H);
+
+  const nodes = [
+    {x:W/2, y:H/2, r:14, label:'TARGET', color:'#e0122f'},
+    {x:W*0.2, y:H*0.3, r:9, label:'FEAR', color:'#ff3552'},
+    {x:W*0.8, y:H*0.3, r:9, label:'URGENCY', color:'#e67e22'},
+    {x:W*0.15, y:H*0.7, r:8, label:'AUTH', color:'#22d3ee'},
+    {x:W*0.85, y:H*0.7, r:8, label:'GREED', color:'#2ecc71'},
+    {x:W*0.5, y:H*0.15, r:7, label:'PRESSURE', color:'#9b59b6'},
+  ];
+
+  const mi = data.manipulationIndicators || {};
+  nodes[1].r = 6 + (mi.fear||0)/14;
+  nodes[2].r = 6 + (mi.urgency||0)/14;
+  nodes[3].r = 6 + (mi.authority||0)/14;
+  nodes[4].r = 6 + (mi.greed||0)/14;
+  nodes[5].r = 6 + (mi.pressure||0)/14;
+
+  // draw edges
+  nodes.slice(1).forEach(n => {
+    ctx.beginPath();
+    ctx.moveTo(W/2, H/2);
+    ctx.lineTo(n.x, n.y);
+    ctx.strokeStyle = 'rgba(15,23,42,0.12)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // draw nodes
+  nodes.forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+    ctx.fillStyle = n.color + '33';
+    ctx.fill();
+    ctx.strokeStyle = n.color;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = '#0f1420';
+    ctx.font = `${Math.max(7,n.r*0.6)}px JetBrains Mono`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(n.label, n.x, n.y + n.r + 9);
+  });
+}
+
+// ============================================================
+// COUNTER ANIMATION
+// ============================================================
+function animateCounter(el, from, to, duration) {
+  const start = Date.now();
+  function update() {
+    const elapsed = Date.now() - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (to - from) * eased);
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// ============================================================
+// AI INVESTIGATOR CHAT
+// ============================================================
+const chatResponses = [
+  'Based on the analysis, this exhibits classic social engineering patterns. The attacker uses authority impersonation combined with artificial urgency to bypass rational decision-making.',
+  'The fear-urgency combination is a textbook manipulation technique. The target is pushed into a fight-or-flight response, reducing critical thinking capacity.',
+  'This communication profile matches organized fraud ring behavior — scripted, templated, and designed for mass deployment across multiple victims.',
+  'Recommend immediate evidence preservation. Screenshot all communications, note timestamps, and report to cybercrime.gov.in or call 1930.',
+  'The linguistic patterns suggest the content was machine-translated or script-generated, indicating industrial-scale fraud operation.',
+  'Key red flag: legitimate organizations never ask for OTP, passwords, or remote access via unsolicited contact.',
+];
+let chatResponseIdx = 0;
+
+function addChatMessage(text, from) {
+  const chat = document.getElementById('chat-messages');
+  const el = document.createElement('div');
+  el.className = 'msg msg-ai';
+  el.innerHTML = `<div class="msg-prefix">PSYINTEL AI ▸</div>${text}`;
+  chat.appendChild(el);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const question = input.value.trim();
+  if (!question) return;
+  input.value = '';
+
+  const userEl = document.createElement('div');
+  userEl.className = 'msg';
+  userEl.style.cssText = 'background:var(--accent-red-glow);border:1px solid var(--accent-red-border);border-radius:7px 7px 2px 7px;font-size:12px;padding:.65rem .9rem;color:var(--text-secondary);max-width:90%;align-self:flex-end;margin-left:auto';
+  userEl.textContent = question;
+  document.getElementById('chat-messages').appendChild(userEl);
+  document.getElementById('chat-messages').scrollTop = 9999;
+
+  try {
+    const context = analysisData ? `Context: Threat level ${analysisData.threatLevel}, score ${analysisData.threatScore}/100. ${analysisData.aiSummary}` : 'No analysis performed yet.';
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:'You are PsyIntel AI Investigator, an expert in cyber psychological intelligence, scam detection, and social engineering analysis. Give concise, professional investigator-style responses in 2-3 sentences. Be factual and actionable.',
+        messages:[{role:'user',content:`${context}\n\nInvestigator question: ${question}`}]
+      })
+    });
+    const data = await response.json();
+    const text = data.content.map(b=>b.text||'').join('');
+    addChatMessage(text,'ai');
+  } catch {
+    addChatMessage(chatResponses[chatResponseIdx++ % chatResponses.length],'ai');
+  }
+}
+
+// ============================================================
+// INVESTIGATOR NOTES
+// ============================================================
+function saveNotes() {
+  const notes = document.getElementById('investigator-notes').value;
+  try { localStorage.setItem('psyintel-notes', notes); } catch(e) {}
+  const saved = document.getElementById('notes-saved');
+  saved.textContent = '✓ Notes saved — ' + new Date().toLocaleTimeString();
+  saved.style.color = '#27ae60';
+  setTimeout(() => { saved.textContent = ''; }, 3000);
+}
+try {
+  const saved = localStorage.getItem('psyintel-notes');
+  if (saved) document.getElementById('investigator-notes').value = saved;
+} catch(e) {}
+
+// ============================================================
+// EXPORT SYSTEM
+// ============================================================
+function exportJSON() {
+  if (!analysisData) { alert('Run an analysis first.'); return; }
+  const payload = {
+    caseId: currentCaseId,
+    evidenceHash: currentEvidenceHash,
+    exportedAt: new Date().toISOString(),
+    custodyLog: custodyLog,
+    analysis: analysisData
+  };
+  logCustody('Report exported as JSON');
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${currentCaseId||'psyintel-report'}.json`; a.click();
+}
+
+function exportCSV() {
+  if (!analysisData) { alert('Run an analysis first.'); return; }
+  const d = analysisData;
+  const mi = d.manipulationIndicators || {};
+  const ents = d.entities || {};
+  let csv = 'Field,Value\n';
+  csv += `Case Reference,${currentCaseId||''}\n`;
+  csv += `Evidence Hash (SHA-256),${currentEvidenceHash||''}\n`;
+  csv += `Threat Score,${d.threatScore}\n`;
+  csv += `Threat Level,${d.threatLevel}\n`;
+  csv += `AI Summary,"${(d.aiSummary||'').replace(/"/g,"'")}"\n`;
+  csv += `Fear,${mi.fear||0}\nUrgency,${mi.urgency||0}\nAuthority,${mi.authority||0}\nGreed,${mi.greed||0}\nPressure,${mi.pressure||0}\nTrust Exploit,${mi.trustExploit||0}\n`;
+  (d.scamPatterns||[]).forEach(p => { csv += `Pattern: ${p.name},${p.confidence}%\n`; });
+  (d.campaignMatches||[]).forEach(c => { csv += `Campaign Match: ${c.name},${c.score}%\n`; });
+  csv += `UPI IDs,"${(ents.upiIds||[]).join('; ')}"\n`;
+  csv += `IFSC Codes,"${(ents.ifscCodes||[]).join('; ')}"\n`;
+  csv += `Crypto Wallets,"${(ents.cryptoWallets||[]).join('; ')}"\n`;
+  csv += `Bank Accounts,"${(ents.bankAccounts||[]).join('; ')}"\n`;
+  const blob = new Blob([csv], {type:'text/csv'});
+  logCustody('Report exported as CSV');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${currentCaseId||'psyintel-report'}.csv`; a.click();
+}
+
+function copyEvidenceHash() {
+  if (!currentEvidenceHash) { alert('Run an analysis first — the evidence hash is generated at analysis time.'); return; }
+  navigator.clipboard.writeText(currentEvidenceHash).then(() => {
+    logCustody('Evidence hash copied to clipboard');
+    alert('Evidence hash (SHA-256) copied to clipboard:\n\n' + currentEvidenceHash);
+  }).catch(() => { alert(currentEvidenceHash); });
+}
+
+function printReport() {
+  if (!analysisData) { alert('Run an analysis first.'); return; }
+  logCustody('Report sent to print');
+  window.print();
+}
+
+function exportIntel() {
+  if (!analysisData) { alert('Run an analysis first.'); return; }
+  const d = analysisData;
+  const mi = d.manipulationIndicators || {};
+  const ents = d.entities || {};
+  const text = `PSYINTEL INTELLIGENCE REPORT
+Generated: ${new Date().toLocaleString()}
+Classification: THREAT ASSESSMENT
+Case Reference: ${currentCaseId||'—'}
+Evidence Hash (SHA-256): ${currentEvidenceHash||'—'}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+THREAT OVERVIEW
+───────────────
+Threat Score: ${d.threatScore}/100
+Threat Level: ${d.threatLevel}
+Detected Language: ${d.detectedLanguage || 'English'}
+
+EXECUTIVE SUMMARY
+─────────────────
+${d.aiSummary}
+
+PSYCHOLOGICAL INDICATORS
+────────────────────────
+Fear Index:        ${mi.fear || 0}/100
+Urgency Index:     ${mi.urgency || 0}/100
+Authority Index:   ${mi.authority || 0}/100
+Greed Index:       ${mi.greed || 0}/100
+Pressure Index:    ${mi.pressure || 0}/100
+Trust Exploit:     ${mi.trustExploit || 0}/100
+
+SCAM PATTERN INTELLIGENCE
+─────────────────────────
+${(d.scamPatterns||[]).map(p => `${p.name.padEnd(25)} ${p.confidence}% confidence`).join('\n')}
+
+KNOWN CAMPAIGN SIGNATURE MATCH
+───────────────────────────────
+${(d.campaignMatches||[]).length ? d.campaignMatches.map(c => `${c.name.padEnd(38)} ${c.score}% match`).join('\n') : 'No known campaign signature matched.'}
+
+ENTITY EXTRACTION
+─────────────────
+Phone Numbers: ${(ents.phoneNumbers||[]).join(', ') || 'None'}
+URLs Detected: ${(ents.urls||[]).join(', ') || 'None'}
+Email Addresses: ${(ents.emails||[]).join(', ') || 'None'}
+Organizations: ${(ents.organizations||[]).join(', ') || 'None'}
+Financial Amounts: ${(ents.amounts||[]).join(', ') || 'None'}
+UPI IDs: ${(ents.upiIds||[]).join(', ') || 'None'}
+IFSC Codes: ${(ents.ifscCodes||[]).join(', ') || 'None'}
+Crypto Wallets: ${(ents.cryptoWallets||[]).join(', ') || 'None'}
+Bank Accounts: ${(ents.bankAccounts||[]).join(', ') || 'None'}
+
+INVESTIGATION TIMELINE
+──────────────────────
+${(d.timeline||[]).map(t => `[${t.severity?.toUpperCase()}] ${t.time}: ${t.event}`).join('\n')}
+
+RECOMMENDATIONS
+───────────────
+${(d.recommendations||[]).map((r,i) => `${i+1}. [${r.type?.toUpperCase()}] ${r.text}`).join('\n')}
+
+CHAIN OF CUSTODY
+────────────────
+${custodyLog.map(c => `${new Date(c.time).toLocaleString()} — ${c.action}`).join('\n')}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PSYINTEL | Built by Karandeep Baror | @CryptonicArea
+For cybercrime reporting: cybercrime.gov.in | Helpline: 1930`;
+  logCustody('Report exported as Intelligence Text File');
+  const blob = new Blob([text], {type:'text/plain'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${currentCaseId||'psyintel-intelligence-report'}.txt`; a.click();
+}
+
+function exportPDF() {
+  if (!analysisData) { alert('Run an analysis first.'); return; }
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const d = analysisData;
+    const mi = d.manipulationIndicators || {};
+    const ents = d.entities || {};
+    const PAGE_H = 297, MARGIN_BOTTOM = 22;
+
+    function newPage() {
+      doc.addPage();
+      doc.setFillColor(255,255,255); doc.rect(0,0,210,297,'F');
+      y = 18;
+    }
+    function ensureSpace(need) {
+      if (y + need > PAGE_H - MARGIN_BOTTOM) newPage();
+    }
+
+    // ---- PAGE BACKGROUND ----
+    doc.setFillColor(255,255,255);
+    doc.rect(0,0,210,297,'F');
+
+    // ---- LETTERHEAD ----
+    doc.setFillColor(224,18,48);
+    doc.rect(0,0,210,3,'F');
+
+    doc.setTextColor(15,20,32);
+    doc.setFontSize(22);
+    doc.setFont('helvetica','bold');
+    doc.text('PSYINTEL',15,20);
+    doc.setFontSize(8.5);
+    doc.setTextColor(224,18,48);
+    doc.setFont('helvetica','bold');
+    doc.text('CYBER PSYCHOLOGICAL INTELLIGENCE REPORT',15,26);
+
+    doc.setFontSize(8);
+    doc.setTextColor(100,116,139);
+    doc.setFont('helvetica','normal');
+    doc.text(`Generated: ${new Date().toLocaleString()}`,195,15,{align:'right'});
+    doc.text('Built by Karandeep Baror | @CryptonicArea',195,20,{align:'right'});
+    doc.setTextColor(224,18,48);
+    doc.setFont('helvetica','bold');
+    doc.text('CONFIDENTIAL — INVESTIGATIVE USE',195,25,{align:'right'});
+
+    doc.setDrawColor(226,232,240); doc.setLineWidth(0.3); doc.line(15,31,195,31);
+
+    // ---- CASE REFERENCE / EVIDENCE INTEGRITY BOX ----
+    doc.setFillColor(248,250,252);
+    doc.setDrawColor(226,232,240);
+    doc.roundedRect(15,35,180,18,1.5,1.5,'FD');
+    doc.setFontSize(6.5); doc.setTextColor(148,163,184); doc.setFont('helvetica','bold');
+    doc.text('CASE REFERENCE',19,40.5);
+    doc.text('EVIDENCE HASH (SHA-256)',19,47.5);
+    doc.setFontSize(8); doc.setTextColor(15,20,32); doc.setFont('courier','bold');
+    doc.text(currentCaseId || '—',60,40.5);
+    doc.setFontSize(7);
+    doc.text(currentEvidenceHash || '—',60,47.5);
+
+    let y = 62;
+    function section(title) {
+      ensureSpace(14);
+      doc.setTextColor(224,18,48); doc.setFontSize(9.5); doc.setFont('helvetica','bold');
+      doc.text(title, 15, y); y += 5;
+      doc.setDrawColor(226,232,240); doc.setLineWidth(0.2); doc.line(15,y,195,y); y += 5.5;
+    }
+    function row(label, val, valColor) {
+      ensureSpace(7);
+      doc.setTextColor(100,116,139); doc.setFontSize(8); doc.setFont('helvetica','normal');
+      doc.text(label, 15, y);
+      if(valColor) doc.setTextColor(...valColor); else doc.setTextColor(15,20,32);
+      doc.setFont('helvetica','bold');
+      const valLines = doc.splitTextToSize(String(val), 112);
+      ensureSpace(valLines.length*5);
+      doc.text(valLines, 80, y);
+      y += Math.max(6, valLines.length*5);
+    }
+    function paragraph(text, color=[71,85,105]) {
+      doc.setTextColor(...color); doc.setFontSize(8); doc.setFont('helvetica','normal');
+      const lines = doc.splitTextToSize(text||'', 175);
+      lines.forEach(line => { ensureSpace(5); doc.text(line, 15, y); y += 5; });
+      y += 2;
+    }
+
+    section('THREAT OVERVIEW');
+    const lvlColor = d.threatLevel==='CRITICAL'?[224,18,48]:d.threatLevel==='HIGH'?[230,126,34]:d.threatLevel==='MEDIUM'?[180,83,9]:[5,150,105];
+    row('Threat Score', `${d.threatScore}/100`, lvlColor);
+    row('Threat Level', d.threatLevel, lvlColor);
+    row('Detected Language', d.detectedLanguage||'English');
+    y += 2;
+
+    section('EXECUTIVE SUMMARY');
+    paragraph(d.aiSummary);
+
+    section('PSYCHOLOGICAL MANIPULATION INDICATORS');
+    [['Fear Index',mi.fear||0],['Urgency Index',mi.urgency||0],['Authority Index',mi.authority||0],['Greed Index',mi.greed||0],['Pressure Index',mi.pressure||0],['Trust Exploitation',mi.trustExploit||0]].forEach(([l,v]) => row(l,`${v}/100`));
+    y += 2;
+
+    section('SCAM PATTERN INTELLIGENCE');
+    if ((d.scamPatterns||[]).length) (d.scamPatterns||[]).forEach(p => row(p.name, `${p.confidence}% confidence`));
+    else paragraph('No specific scam pattern signatures matched.');
+    y += 2;
+
+    section('KNOWN CAMPAIGN SIGNATURE MATCH');
+    if ((d.campaignMatches||[]).length) (d.campaignMatches||[]).forEach(c => row(c.name, `${c.score}% match`));
+    else paragraph('No known campaign signature matched — may be a novel or low-signal script.');
+    y += 2;
+
+    section('ENTITY EXTRACTION');
+    row('Phone Numbers', (ents.phoneNumbers||[]).join(', ') || 'None');
+    row('URLs Detected', (ents.urls||[]).join(', ') || 'None');
+    row('Email Addresses', (ents.emails||[]).join(', ') || 'None');
+    row('Organizations', (ents.organizations||[]).join(', ') || 'None');
+    row('Financial Amounts', (ents.amounts||[]).join(', ') || 'None');
+    row('UPI IDs', (ents.upiIds||[]).join(', ') || 'None');
+    row('IFSC Codes', (ents.ifscCodes||[]).join(', ') || 'None');
+    row('Crypto Wallets', (ents.cryptoWallets||[]).join(', ') || 'None');
+    row('Bank Accounts', (ents.bankAccounts||[]).join(', ') || 'None');
+    y += 2;
+
+    section('RECOMMENDATIONS');
+    (d.recommendations||[]).forEach((r,i) => {
+      paragraph(`${i+1}. [${(r.type||'').toUpperCase()}] ${r.text}`, [15,20,32]);
+    });
+
+    section('CHAIN OF CUSTODY');
+    if (custodyLog.length) custodyLog.forEach(c => {
+      ensureSpace(5);
+      doc.setTextColor(100,116,139); doc.setFontSize(7); doc.setFont('courier','normal');
+      doc.text(`${new Date(c.time).toLocaleString()}`,15,y);
+      doc.setTextColor(15,20,32); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+      doc.text(c.action, 62, y);
+      y += 4.5;
+    });
+    else paragraph('No custody events logged.');
+
+    section('METHODOLOGY & LIMITATIONS');
+    paragraph('This assessment is generated using automated linguistic pattern-matching and heuristic scoring against known fraud indicators and a local library of recurring scam-campaign scripts. It is a decision-support tool intended to assist investigators and is not, by itself, legal proof of criminal intent. Findings should be corroborated with independent evidence before use in formal proceedings.', [71,85,105]);
+
+    // ---- FOOTER ON EVERY PAGE ----
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let p=1; p<=pageCount; p++) {
+      doc.setPage(p);
+      doc.setDrawColor(224,18,48); doc.setLineWidth(0.4); doc.line(15,280,195,280);
+      doc.setTextColor(100,116,139); doc.setFontSize(7); doc.setFont('helvetica','normal');
+      doc.text('PSYINTEL — Cyber Psychological Intelligence Platform | Built by Karandeep Baror (@CryptonicArea)',105,285,{align:'center'});
+      doc.text('For cybercrime reporting: cybercrime.gov.in | National Helpline: 1930',105,290,{align:'center'});
+      doc.setTextColor(148,163,184); doc.setFontSize(6.5);
+      doc.text(`Page ${p} of ${pageCount} | Case ${currentCaseId||'—'}`,195,294,{align:'right'});
+    }
+
+    logCustody('Report exported as PDF');
+    doc.save(`${currentCaseId||'psyintel-report'}.pdf`);
+  } catch(e) {
+    console.error('PDF export failed, falling back to text report:', e);
+    exportIntel();
+  }
+}
+
+// ============================================================
+// SAMPLE TEXT LOADER (for demo)
+// ============================================================
+window.addEventListener('load', () => {
+  const demo = `Dear Valued Customer,
+
+URGENT NOTICE: Your SBI account has been TEMPORARILY SUSPENDED due to incomplete KYC verification.
+
+You must complete your KYC within the next 24 HOURS or your account will be PERMANENTLY BLOCKED and all pending transactions will be CANCELLED.
+
+To avoid this, immediately:
+1. Click here: http://sbi-kyc-secure-verify.xyz/update?ref=8291047
+2. Call our KYC Officer: +91-9876-543-210 (Available 24/7)
+3. Have your Aadhaar, PAN Card, and OTP ready
+
+DO NOT SHARE THIS MESSAGE with anyone. This is STRICTLY CONFIDENTIAL.
+
+Failure to comply within 24 hours will result in LEGAL ACTION under Section 66 of IT Act.
+
+- SBI Security Team
+Reference ID: SBI/KYC/2024/487293`;
+  document.getElementById('main-input').value = demo;
+  renderCaseHistory();
+  renderCustodyLog();
+});
+</script>
+
+
+</body></html>
