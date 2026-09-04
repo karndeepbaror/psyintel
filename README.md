@@ -289,14 +289,31 @@ PsyIntel is an **educational and decision-support tool**. Its threat scores and 
 
 ---
 
-## 👤 Author
+## 🙌 Developer & Credits
 
-**Built by [Karandeep Baror](https://github.com/karndeepbaror)**
-Building [@CryptonicArea](https://github.com/CryptonicArea)
+<div align="center">
+
+
+### 👤 Karndeep Baror
+
+<br/>
+
+[![GitHub](https://img.shields.io/badge/GitHub-karndeepbaror-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/karndeepbaror)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/company/cryptonicarea)
+[![Instagram](https://img.shields.io/badge/Instagram-Follow-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/cryptonicarea)
+[![YouTube](https://img.shields.io/badge/YouTube-Subscribe-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/@CryptonicArea)
+[![Telegram](https://img.shields.io/badge/Telegram-Join-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/cryptonicarea)
+[![X](https://img.shields.io/badge/X-Follow-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/cryptonicarea)
 
 <br/>
 
 ---
+
+<br/>
+
+![Stars](https://img.shields.io/badge/⭐-Star%20this%20repo%20if%20WRAITH%20helped%20you-FFD60A?style=for-the-badge&labelColor=0b0e14)
+
+<br/>
 
 ## 📜 License
 
