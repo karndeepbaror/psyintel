@@ -212,24 +212,6 @@ Simply visit the hosted platform — no installation required:
 
 **🔗 [karndeepbaror.github.io/psyintel](https://karndeepbaror.github.io/psyintel)**
 
-### Run Locally
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/karndeepbaror/psyintel.git
-
-# 2. Move into the project directory
-cd psyintel
-
-# 3. Serve it locally (any static server works)
-python3 -m http.server 8080
-# or
-npx serve .
-
-# 4. Open in your browser
-http://localhost:8080
-```
-
 No build step, no dependencies to install, no backend required — PsyIntel is **100% static and self-contained.**
 
 <br/>
